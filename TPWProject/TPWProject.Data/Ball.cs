@@ -7,61 +7,37 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TPWProject.Data.Abstract;
 
 namespace TPWProject.Data
 {
-    public class Ball : IBall
+    public class Ball : Shape
     {
         private double _top;
         private double _left;
-        public double Top { get => _top; set { _top = value; OnPropertyChanged(); } }
-        public double Left { get => _left; set { _left = value; OnPropertyChanged(); } }
 
-        private double _maxTop;
-        private double _maxLeft;
-        public double MaxTop { get => _maxTop; set { _maxTop = value; OnPropertyChanged(); } }
-        public double MaxLeft { get => _maxLeft; set { _maxLeft = value; OnPropertyChanged(); } }
-
-        public int Diameter { get; }
-        public double Mass { get; }
+        public override double Top { get => _top; set { _top = value; OnPropertyChanged(); } }
+        public override double Left { get => _left; set { _left = value; OnPropertyChanged(); } }
+        public double Diameter { get; }
+        public override double Mass { get; }
         public int Speed { get; }
 
-        private readonly Timer timer;
-        private readonly Random random;
 
-
-        public Ball(double top, double left, int diameter, double mass)
+        public Ball(double top, double left, double diameter, double mass)
         {
             Top = top;
             Left = left;
             Diameter = diameter;
             Mass = mass;
-            Speed = 10;
-            timer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
-            random = new Random();
+            Speed = 2;
         }
 
-        public void Dispose()
+        public override void Move(double height, double width)
         {
-            timer.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
-        private void Move(object state)
-        {
+            Random random = new Random();
             //TODO change to smooth movement
             Top += (random.NextDouble() - 0.5) * Speed;
             Left += (random.NextDouble() - 0.5) * Speed;
-            Debug.Print($"top: {MaxTop}; Left: {MaxLeft}");
-        }
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

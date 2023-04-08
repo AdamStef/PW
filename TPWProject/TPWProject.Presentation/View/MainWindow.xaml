@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TPWProject.Presentation.View" xmlns:viewmodel="clr-namespace:TPWProject.Presentation.ViewModel"
+        xmlns:local="clr-namespace:TPWProject.Presentation.View"
+        xmlns:viewmodel="clr-namespace:TPWProject.Presentation.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow"
         MinHeight="450" MinWidth="800"
@@ -21,20 +22,26 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label Content="Podaj liczbę początkowych kul:"/>
             <TextBox Text="{Binding BallsCount}" Width="120" PreviewTextInput="NumberValidationTextBox" Height="20"/>
-            <Button Command="{Binding StartButtonCommand}" Content="Start" Height="20" Width="69"/>
+            <Button Command="{Binding StartButtonCommand}" Content="Start" Height="20" Width="70"/>
+            <Button Command="{Binding StopButtonCommand}" Content="Stop" Height="20" Width="70"/>
+            <Button Command="{Binding ClearButtonCommand}" Content="Clear" Height="20" Width="70"/>
         </StackPanel>
         <Border Grid.Row="1" Background="AliceBlue" BorderBrush="Black"
-                BorderThickness="1" Height="{Binding }" Width="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                BorderThickness="1"
+                Height="auto" Width="auto"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <!--viewmodel:Size.Height="{Binding Height, Mode=OneWayToSource}"
+                viewmodel:Size.Width="{Binding Width, Mode=OneWayToSource}"-->
             <ItemsControl ItemsSource="{Binding Balls}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas />
+                        <Canvas viewmodel:Size.Size="True" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Ellipse Canvas.Top="{Binding Top}" Canvas.Left="{Binding Left}"
-                            Fill="DarkGray" Stroke="Black" Width="{Binding Diameter}" Height="{Binding Diameter}" />
+                        <Ellipse Fill="DarkGray" Stroke="Black"
+                                 Width="{Binding Path=Diameter}" Height="{Binding Path=Diameter}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemContainerStyle>
