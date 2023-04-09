@@ -29,15 +29,42 @@ namespace TPWProject.Data
             Left = left;
             Diameter = diameter;
             Mass = mass;
-            Speed = 2;
+            Speed = 20;
         }
 
         public override void Move(double height, double width)
         {
             Random random = new Random();
-            //TODO change to smooth movement
-            Top += (random.NextDouble() - 0.5) * Speed;
-            Left += (random.NextDouble() - 0.5) * Speed;
+            double topsum = (random.NextDouble() - 0.5) * Speed;
+            double leftsum = (random.NextDouble() - 0.5) * Speed;
+            double MaxTop = 375;
+            double MaxLeft = 800;
+            if (Top + topsum <= 0)
+            {
+                Top = 0;
+            }
+            else if (Top + topsum + Diameter >= MaxTop)
+            {
+                Top = MaxTop - Diameter;
+            }
+            else
+            {
+                Top += topsum;
+            }
+
+            if (Left + leftsum <= 0)
+            {
+                Left = 0;
+            }
+            else if (Left + leftsum + Diameter >= MaxLeft)
+            {
+                Left = MaxLeft - Diameter;
+            }
+            else
+            {
+                Left += leftsum;
+            }
+
         }
     }
 }

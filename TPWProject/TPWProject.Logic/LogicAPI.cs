@@ -66,7 +66,7 @@ namespace TPWProject.Logic
                     while(isRunning)
                     {
                         ball.Move(height, width);
-                        Thread.Sleep(5);
+                        Thread.Sleep(200);
                     }
                 });
                 thread.Start();
