@@ -37,15 +37,13 @@ namespace TPWProject.Data
             Random random = new Random();
             double topsum = (random.NextDouble() - 0.5) * Speed;
             double leftsum = (random.NextDouble() - 0.5) * Speed;
-            double MaxTop = 375;
-            double MaxLeft = 800;
             if (Top + topsum <= 0)
             {
                 Top = 0;
             }
-            else if (Top + topsum + Diameter >= MaxTop)
+            else if (Top + topsum + Diameter >= height)
             {
-                Top = MaxTop - Diameter;
+                Top = height - Diameter;
             }
             else
             {
@@ -56,9 +54,9 @@ namespace TPWProject.Data
             {
                 Left = 0;
             }
-            else if (Left + leftsum + Diameter >= MaxLeft)
+            else if (Left + leftsum + Diameter >= width)
             {
-                Left = MaxLeft - Diameter;
+                Left = width - Diameter;
             }
             else
             {
