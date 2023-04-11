@@ -20,46 +20,34 @@ namespace TPWProject.Presentation.Model
         }
         #endregion
 
-        private double _top;
-        private double _left;
-        private double _diameter;
-        private double _speed;
-        private double _mass;
+        private readonly Ball ball;
 
         public double Top
         {
-            get => _top;
-            set { _top = value; OnPropertyChanged(); }
+            get => ball.Top;
+            set { ball.Top = value; OnPropertyChanged(); }
         }
         public double Left
         {
-            get => _left;
-            set { _left = value; OnPropertyChanged(); }
+            get => ball.Left;
+            set { ball.Left = value; OnPropertyChanged(); }
         }
         public double Diameter
         {
-            get => _diameter;
-            set { _diameter = value; OnPropertyChanged(); }
-        }
-        public double Speed
-        {
-            get => _speed;
-            set { _speed = value; OnPropertyChanged(); }
-        }
-        public double Mass
-        {
-            get => _mass;
-            set { _mass = value; OnPropertyChanged(); }
+            get => ball.Diameter;
         }
 
         public BallModel(Ball ball)
         {
-            Top = ball.Top;
-            Left = ball.Left;
-            Diameter = ball.Diameter;
-            Speed = ball.Speed;
-            Mass = ball.Mass;
+            this.ball = ball;
+            ball.BallPositionChanged += OnBallPositionChanged;
+        }
+
+        public void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
+        {
+
+            OnPropertyChanged(nameof(Top));
+            OnPropertyChanged(nameof(Left));
         }
     }
-
 }

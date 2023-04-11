@@ -1,6 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Linq;
+using TPWProject.Data;
+using TPWProject.Data.Abstract;
 using TPWProject.Logic;
+using TPWProject.Tests.FakeDependencies;
 
 namespace TPWProject.Tests
 {
@@ -10,7 +14,8 @@ namespace TPWProject.Tests
         [TestMethod]
         public void GenerateBallsTest()
         {
-            LogicAPI logicAPI = new LogicAPI(100, 100);
+            var dataAPI = new FakeDataAPI();
+            LogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
             logicAPI.GenerateBalls(2);
             Assert.AreEqual(logicAPI.GetShapes().Count(), 2);
         }
@@ -18,7 +23,8 @@ namespace TPWProject.Tests
         [TestMethod]
         public void ClearRepositoryTest()
         {
-            LogicAPI logicAPI = new LogicAPI(100, 100);
+            var dataAPI = new FakeDataAPI();
+            LogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
             logicAPI.GenerateBalls(2);
             logicAPI.ClearRepository();
             Assert.AreEqual(logicAPI.GetShapes().Count(), 0);
@@ -27,21 +33,24 @@ namespace TPWProject.Tests
         [TestMethod]
         public void StartStopMovementTest()
         {
-            LogicAPI logicAPI = new LogicAPI(100, 100);
+            var dataAPI = new FakeDataAPI();
+            LogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
             logicAPI.GenerateBalls(2);
             logicAPI.StartBallMovement();
-            Assert.IsTrue(logicAPI.isRunning);
+            Assert.IsTrue(logicAPI.IsRunning);
             logicAPI.StopMovement();
-            Assert.IsFalse(logicAPI.isRunning);
+            Assert.IsFalse(logicAPI.IsRunning);
         }
 
         [TestMethod]
         public void SetDimensionsTest()
         {
-            LogicAPI logicAPI = new LogicAPI(100, 100);
-            logicAPI.SetDimentions(200, 200);
-            Assert.AreEqual(logicAPI.height, 200);
-            Assert.AreEqual(logicAPI.width, 200);
+            var dataAPI = new FakeDataAPI();
+            LogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
+            logicAPI.SetHeight(200);
+            logicAPI.SetWidth(200);
+            Assert.AreEqual(logicAPI.Height, 200);
+            Assert.AreEqual(logicAPI.Width, 200);
         }
     }
 }

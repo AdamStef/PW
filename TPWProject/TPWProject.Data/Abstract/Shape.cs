@@ -8,21 +8,12 @@ using System.Threading.Tasks;
 
 namespace TPWProject.Data.Abstract
 {
-    public abstract class Shape : INotifyPropertyChanged
+    public abstract class Shape
     {
         public abstract double Top { get; set; }
         public abstract double Left { get; set; }
         public abstract double Mass { get; }
 
         public abstract void Move(double height, double width);
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
     }
 }

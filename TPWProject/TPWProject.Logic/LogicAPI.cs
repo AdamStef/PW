@@ -7,47 +7,52 @@ namespace TPWProject.Logic
 {
     public class LogicAPI : AbstractLogicAPI
     {
-        private AbstractDataAPI dataAPI;
-        public double height { get; private set; }
-        public double width { get; private set; }
-        public bool isRunning { get; private set; }
+        private readonly AbstractDataAPI dataAPI;
+        public double Height { get; private set; }
+        public double Width { get; private set; }
+        public bool IsRunning { get; private set; }
 
-        public LogicAPI(double height, double width)
+        public LogicAPI(double height, double width, AbstractDataAPI dataAPI = null)
         {
-            dataAPI = AbstractDataAPI.CreateAPI();
-            this.height = height;
-            this.width = width;
-            isRunning = false;
+            if (dataAPI != null)
+                this.dataAPI = dataAPI;
+            else
+                this.dataAPI = AbstractDataAPI.CreateAPI();
+
+            this.Height = height;
+            this.Width = width;
+            IsRunning = false;
         }
 
         public override void GenerateBalls(int ballsCount)
         {
             for (int i = 0; i < ballsCount; i++)
             {
-                dataAPI.GenerateBall(height, width);
+                dataAPI.GenerateBall(Height, Width);
             }
         }
 
         public override void StartBallMovement()
         {
-            isRunning = true;
+            IsRunning = true;
             foreach (var ball in dataAPI.GetShapes())
             {
                 Thread thread = new Thread(() =>
                 {
-                    while(isRunning)
+                    while(IsRunning)
                     {
-                        ball.Move(height, width);
+                        ball.Move(Height, Width);
                         Thread.Sleep(5);
                     }
                 });
+                thread.IsBackground = true;
                 thread.Start();
             }
         }
 
         public override void StopMovement()
         {
-            isRunning = false;
+            IsRunning = false;
         }
 
         public override void ClearRepository()
@@ -55,10 +60,14 @@ namespace TPWProject.Logic
             dataAPI.RemoveAllShapes();
         }
 
-        public override void SetDimentions(double height, double width)
+        public override void SetHeight(double height)
         {
-            this.height = height;
-            this.width = width;
+            Height = height;
+        }
+
+        public override void SetWidth(double width)
+        {
+            Width = width;
         }
 
         public override IList<Shape> GetShapes()

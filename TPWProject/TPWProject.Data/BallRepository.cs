@@ -10,7 +10,7 @@ namespace TPWProject.Data
 {
     public class BallRepository : IBallRepository
     {
-        private List<Shape> shapes;
+        private readonly List<Shape> shapes;
 
         public BallRepository()
         {

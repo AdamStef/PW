@@ -11,17 +11,10 @@ namespace TPWProject.Data
     public class DataAPI : AbstractDataAPI
     {
         public IBallRepository BallRepository { get; set; }
-        //private int _height;
-        //private int _width;
-        //public override int Height { get => _height; set { _height = value; } }
-        //public override int Width { get => _width; set { _width = value; } }
 
-        public DataAPI(/*int height, int width*/)
+        public DataAPI()
         {
-            //TODO: Dependency Injection???
             BallRepository = new BallRepository();
-            //Height = height;
-            //Width = width;
         }
         public override Ball GenerateBall(double height, double width)
         {
@@ -33,16 +26,6 @@ namespace TPWProject.Data
             Ball ball = new Ball(y, x, diameter, mass);
             BallRepository.Add(ball);
             return ball;
-            //Thread thread = new Thread(() =>
-            //{
-            //    //TODO: change true
-            //    while (true)
-            //    {
-            //        ball.Move();
-            //        Thread.Sleep(100);
-            //    }
-            //});
-            //thread.Start();
         }
 
         public override IList<Shape> GetShapes()
