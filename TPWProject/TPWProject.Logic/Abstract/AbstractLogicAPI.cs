@@ -18,7 +18,10 @@ namespace TPWProject.Logic.Abstract
         public abstract void ClearRepository();
         public abstract void SetHeight(double height);
         public abstract void SetWidth(double width);
+        public abstract double GetHeight();
+        public abstract double GetWidth();
         public abstract void GenerateBalls(int ballsCount);
         public abstract IList<IBall> GetBalls();
+        public abstract bool GetIsRunning();
     }
 }

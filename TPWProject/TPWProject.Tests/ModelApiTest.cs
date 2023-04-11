@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TPWProject.Presentation.Model;
+using TPWProject.Tests.FakeDependencies;
 
 namespace TPWProject.Tests
 {
@@ -9,7 +10,8 @@ namespace TPWProject.Tests
         [TestMethod]
         public void ModelAPITest()
         {
-            ModelAPI modelAPI = AbstractModelAPI.CreateAPI(100, 100);
+            var logicAPI = new FakeLogicAPI();
+            AbstractModelAPI modelAPI = new ModelAPI(100, 100, logicAPI);
             modelAPI.Start(2);
             Assert.AreEqual(modelAPI.GetBalls().Count, 2);
             modelAPI.Stop();

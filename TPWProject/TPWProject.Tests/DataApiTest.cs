@@ -13,7 +13,7 @@ namespace TPWProject.Tests
         {
             IBall testBall = new Ball(20, 20, 10, 10);
             IBall testBall2 = new Ball(40, 40, 15, 15);
-            BallRepository ballRepository = new BallRepository();
+            IBallRepository ballRepository = new BallRepository();
             ballRepository.Add(testBall);
             ballRepository.Add(testBall2);
             Assert.AreEqual(ballRepository.Count(), 2);

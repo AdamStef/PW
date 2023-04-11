@@ -70,9 +70,24 @@ namespace TPWProject.Logic
             Width = width;
         }
 
+        public override double GetHeight()
+        {
+            return Height;
+        }
+
+        public override double GetWidth()
+        {
+            return Width;
+        }
+
         public override IList<IBall> GetBalls()
         {
             return dataAPI.GetBalls();
+        }
+
+        public override bool GetIsRunning()
+        {
+            return IsRunning;
         }
     }
 }

@@ -16,6 +16,13 @@ namespace TPWProject.Tests.FakeDependencies
         private double width;
         private bool isRunning = false;
 
+        public FakeLogicAPI()
+        {
+            balls = new List<IBall>();
+            this.height = 10;
+            this.width = 10;
+        }
+
         public override void ClearRepository()
         {
             balls.Clear();
@@ -23,12 +30,28 @@ namespace TPWProject.Tests.FakeDependencies
 
         public override void GenerateBalls(int ballsCount)
         {
-            balls.Add(new Ball(10, 10, 10, 10));
+            for (int i = 0; i < ballsCount; i++)
+                balls.Add(new Ball(10, 10, 10, 10));
         }
 
         public override IList<IBall> GetBalls()
         {
             return balls;
+        }
+
+        public override double GetHeight()
+        {
+            return height;
+        }
+
+        public override bool GetIsRunning()
+        {
+            return isRunning;
+        }
+
+        public override double GetWidth()
+        {
+            return width;
         }
 
         public override void SetHeight(double height)
