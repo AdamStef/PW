@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using TPWProject.Data.Abstract;
 using TPWProject.Logic.Abstract;
@@ -9,14 +8,16 @@ namespace TPWProject.Logic
     public class LogicAPI : AbstractLogicAPI
     {
         private AbstractDataAPI dataAPI;
-        private double height;
-        private double width;
-        private bool isRunning = false;
+        public double height { get; private set; }
+        public double width { get; private set; }
+        public bool isRunning { get; private set; }
+
         public LogicAPI(double height, double width)
         {
             dataAPI = AbstractDataAPI.CreateAPI();
             this.height = height;
             this.width = width;
+            isRunning = false;
         }
 
         public override void GenerateBalls(int ballsCount)

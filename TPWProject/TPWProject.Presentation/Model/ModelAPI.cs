@@ -1,46 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TPWProject.Logic.Abstract;
-using TPWProject.Logic;
+﻿using System.Collections.ObjectModel;
 using TPWProject.Data;
-using TPWProject.Data.Abstract;
-using System.Collections.ObjectModel;
+using TPWProject.Logic.Abstract;
 
 namespace TPWProject.Presentation.Model
 {
-    internal class ModelAPI
+    public class ModelAPI : AbstractModelAPI
     {
         private AbstractLogicAPI logicAPI;
+
         public ModelAPI(double height, double width)
         {
             logicAPI = AbstractLogicAPI.CreateAPI(height, width);
         }
 
-        public void Start(int numberOfBalls)
+        public override void Start(int numberOfBalls)
         {
             logicAPI.GenerateBalls(numberOfBalls);
             logicAPI.StartBallMovement();
         }
 
-        public void Stop()
+        public override void Stop()
         {
             logicAPI.StopMovement();
             logicAPI.ClearRepository();
         }
 
-        public void SetDimentions(double height, double width)
+        public override void SetDimentions(double height, double width)
         {
             logicAPI.SetDimentions(height, width);
         }
 
-        public ObservableCollection<Shape> GetShapes()
+        public override ObservableCollection<BallModel> GetShapes()
         {
-            ObservableCollection<Shape> balls = new ObservableCollection<Shape>();
+            ObservableCollection<BallModel> balls = new ObservableCollection<BallModel>();
             foreach (Ball ball in logicAPI.GetShapes())
-                balls.Add(ball);
+                balls.Add(new BallModel(ball));
             return balls;
         }
     }

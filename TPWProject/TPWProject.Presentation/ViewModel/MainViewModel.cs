@@ -16,13 +16,13 @@ namespace TPWProject.Presentation.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private ModelAPI model;
-        private ObservableCollection<Shape> _balls;
+        private ObservableCollection<BallModel> _balls;
         private int _ballsCount;
         private double _height;
         private double _width;
 
         #region Properties
-        public ObservableCollection<Shape> Balls
+        public ObservableCollection<BallModel> Balls
         {
             get => _balls;
             set
@@ -72,7 +72,7 @@ namespace TPWProject.Presentation.ViewModel
             StopButtonCommand = new RelayCommand(StopButton);
             ClearButtonCommand = new RelayCommand(ClearButton);
             model = new ModelAPI(Height, Width);
-            _balls = new ObservableCollection<Shape>();
+            _balls = new ObservableCollection<BallModel>();
 
             //StartButton(null);
             //model.Start(3);
