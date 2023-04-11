@@ -11,7 +11,9 @@ namespace TPWProject.Presentation.Model
         }
 
         public abstract ObservableCollection<BallModel> GetShapes();
-        public abstract void SetDimentions(double height, double width);
+        public abstract void SetHeight(double height);
+        public abstract void SetWidth(double width);
+        public abstract void SetDimensions(double height, double width);
         public abstract void Start(int numberOfBalls);
         public abstract void Stop();
     }

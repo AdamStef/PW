@@ -16,7 +16,8 @@ namespace TPWProject.Logic.Abstract
         public abstract void StartBallMovement();
         public abstract void StopMovement();
         public abstract void ClearRepository();
-        public abstract void SetDimentions(double height, double width);
+        public abstract void SetHeight(double height);
+        public abstract void SetWidth(double width);
         public abstract void GenerateBalls(int ballsCount);
         public abstract IList<Shape> GetShapes();
     }

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TPWProject.Presentation.View"
         xmlns:viewmodel="clr-namespace:TPWProject.Presentation.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow"
         MinHeight="450" MinWidth="800"
@@ -21,7 +22,13 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label Content="Podaj liczbę początkowych kul:"/>
-            <TextBox Text="{Binding BallsCount}" Width="120" PreviewTextInput="NumberValidationTextBox" Height="20"/>
+            <TextBox Text="{Binding BallsCount}" Width="120" Height="20">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewTextInput" >
+                        <i:CallMethodAction TargetObject="{Binding}" MethodName="NumberValidationTextBox" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
             <Button Command="{Binding StartButtonCommand}" Content="Start" Height="20" Width="70"/>
             <Button Command="{Binding StopButtonCommand}" Content="Stop" Height="20" Width="70"/>
             <Button Command="{Binding ClearButtonCommand}" Content="Clear" Height="20" Width="70"/>
@@ -30,8 +37,6 @@
                 BorderThickness="1"
                 Height="auto" Width="auto"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <!--viewmodel:Size.Height="{Binding Height, Mode=OneWayToSource}"
-                viewmodel:Size.Width="{Binding Width, Mode=OneWayToSource}"-->
             <ItemsControl ItemsSource="{Binding Balls}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -41,13 +46,14 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Ellipse Fill="DarkGray" Stroke="Black"
-                                 Width="{Binding Path=Diameter}" Height="{Binding Path=Diameter}" />
+                                 Width="{Binding Diameter}"
+                                 Height="{Binding Diameter}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="{x:Type ContentPresenter}">
-                        <Setter Property="Canvas.Top" Value="{Binding Top}" />
-                        <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Top, UpdateSourceTrigger=PropertyChanged}" />
+                        <Setter Property="Canvas.Left" Value="{Binding Left, UpdateSourceTrigger=PropertyChanged}" />
                     </Style>
                 </ItemsControl.ItemContainerStyle>
             </ItemsControl>

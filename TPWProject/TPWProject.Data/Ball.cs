@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
 using TPWProject.Data.Abstract;
 
 namespace TPWProject.Data
 {
-    public class Ball : Shape
+    public class Ball : Shape, INotifyBallPositionChanged
     {
-        private double _top;
-        private double _left;
         private Direction _verticalDirection;
         private Direction _horizontalDirection;
 
-        public override double Top { get => _top; set { _top = value; OnPropertyChanged(); } }
-        public override double Left { get => _left; set { _left = value; OnPropertyChanged(); } }
+        public override double Top { get; set; }
+        public override double Left { get; set; }
         public double Diameter { get; }
         public override double Mass { get; }
         public double Speed { get; }
+
+        public event BallPositionChangedEventHandler BallPositionChanged;
 
 
         public Ball(double top, double left, double diameter, double mass)
@@ -24,7 +25,7 @@ namespace TPWProject.Data
             Left = left;
             Diameter = diameter;
             Mass = mass;
-            Speed = random.NextDouble()+0.3;
+            Speed = random.NextDouble() + 0.5;
             _verticalDirection = random.NextDouble() > 0.5 ? Direction.UP : Direction.DOWN;
             _horizontalDirection = random.NextDouble() > 0.5 ? Direction.LEFT : Direction.RIGHT;
         }
@@ -66,6 +67,8 @@ namespace TPWProject.Data
             {
                 Left -= Speed;
             }
+
+            BallPositionChanged?.Invoke(this, new BallPositionChangedEventArgs(Top, Left));
         }
     }
 }

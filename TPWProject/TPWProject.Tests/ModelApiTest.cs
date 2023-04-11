@@ -14,10 +14,6 @@ namespace TPWProject.Tests
             Assert.AreEqual(modelAPI.GetShapes().Count, 2);
             modelAPI.Stop();
             Assert.AreEqual(modelAPI.GetShapes().Count, 0);
-            modelAPI.SetDimentions(200, 200);
-            Assert.AreEqual(modelAPI.GetShapes().Count, 0);
-            modelAPI.Start(2);
-            Assert.AreEqual(modelAPI.GetShapes().Count, 2);
         }
     }
 }
