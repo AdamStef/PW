@@ -33,7 +33,6 @@ namespace TPWProject.Data
             Diameter = diameter;
             Mass = mass;
             Speed = random.NextDouble()+0.3;
-            Debug.WriteLine(Speed);
             _verticalDirection = random.NextDouble() > 0.5 ? Direction.UP : Direction.DOWN;
             _horizontalDirection = random.NextDouble() > 0.5 ? Direction.LEFT : Direction.RIGHT;
         }
