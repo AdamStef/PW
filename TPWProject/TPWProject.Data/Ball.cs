@@ -32,14 +32,14 @@ namespace TPWProject.Data
             Left = left;
             Diameter = diameter;
             Mass = mass;
-            Speed = 0.5;
+            Speed = random.NextDouble()+0.3;
+            Debug.WriteLine(Speed);
             _verticalDirection = random.NextDouble() > 0.5 ? Direction.UP : Direction.DOWN;
             _horizontalDirection = random.NextDouble() > 0.5 ? Direction.LEFT : Direction.RIGHT;
         }
 
         public override void Move(double height, double width)
         {
-            Random random = new Random();
             if (Top - Speed <= 0)
             {
                 _verticalDirection = Direction.DOWN;

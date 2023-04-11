@@ -13,8 +13,6 @@ namespace TPWProject.Logic.Abstract
         {
             return new LogicAPI(height, width);
         }
-        //public abstract void MoveBall(Shape ball, double top, double left);
-        //public abstract void MoveBalls();
         public abstract void StartBallMovement();
         public abstract void StopMovement();
         public abstract void ClearRepository();
