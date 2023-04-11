@@ -10,26 +10,26 @@ namespace TPWProject.Tests.FakeDependencies
 {
     public class FakeDataAPI : AbstractDataAPI
     {
-        private List<Shape> balls;
+        private List<IBall> balls;
 
         public FakeDataAPI()
         {
-            balls = new List<Shape>();
+            balls = new List<IBall>();
         }
 
-        public override Shape GenerateBall(double height, double width)
+        public override IBall GenerateBall(double height, double width)
         {
             Ball ball = new Ball(10, 10, 10, 10);
             balls.Add(ball);
             return ball;
         }
 
-        public override IList<Shape> GetShapes()
+        public override IList<IBall> GetBalls()
         {
             return balls;
         }
 
-        public override void RemoveAllShapes()
+        public override void RemoveAllBalls()
         {
             balls.Clear();
         }

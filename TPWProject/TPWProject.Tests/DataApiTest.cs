@@ -11,13 +11,13 @@ namespace TPWProject.Tests
         [TestMethod]
         public void CreateBallRepositoryTest()
         {
-            Shape testBall = new Ball(20, 20, 10, 10);
-            Shape testBall2 = new Ball(40, 40, 15, 15);
+            IBall testBall = new Ball(20, 20, 10, 10);
+            IBall testBall2 = new Ball(40, 40, 15, 15);
             BallRepository ballRepository = new BallRepository();
             ballRepository.Add(testBall);
             ballRepository.Add(testBall2);
             Assert.AreEqual(ballRepository.Count(), 2);
-            List<Shape> balls = (List<Shape>)ballRepository.GetAll();
+            List<IBall> balls = (List<IBall>)ballRepository.GetAll();
             Assert.AreSame(balls[0], testBall);
             Assert.AreSame(balls[1], testBall2);
             ballRepository.Remove(testBall2);
@@ -32,13 +32,13 @@ namespace TPWProject.Tests
         public void DataAPITest()
         {
             DataAPI api = new DataAPI();           
-            Shape testball = api.GenerateBall(30, 10);
+            IBall testball = api.GenerateBall(30, 10);
             Assert.IsNotNull(api);
             Assert.IsNotNull(api.GenerateBall(10, 20));
-            List<Shape> balls = (List<Shape>)api.GetShapes();
+            List<IBall> balls = (List<IBall>)api.GetBalls();
             Assert.AreSame(balls[0], testball);
-            api.RemoveAllShapes();
-            List<Shape> balls2 = (List<Shape>)api.GetShapes();
+            api.RemoveAllBalls();
+            List<IBall> balls2 = (List<IBall>)api.GetBalls();
             Assert.IsFalse(balls2.Contains(testball));
         }
     }

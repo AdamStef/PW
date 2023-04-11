@@ -11,9 +11,9 @@ namespace TPWProject.Tests
         {
             ModelAPI modelAPI = AbstractModelAPI.CreateAPI(100, 100);
             modelAPI.Start(2);
-            Assert.AreEqual(modelAPI.GetShapes().Count, 2);
+            Assert.AreEqual(modelAPI.GetBalls().Count, 2);
             modelAPI.Stop();
-            Assert.AreEqual(modelAPI.GetShapes().Count, 0);
+            Assert.AreEqual(modelAPI.GetBalls().Count, 0);
         }
     }
 }

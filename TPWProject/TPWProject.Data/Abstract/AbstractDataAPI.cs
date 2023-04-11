@@ -12,8 +12,8 @@ namespace TPWProject.Data.Abstract
         {
             return new DataAPI();
         }
-        public abstract Shape GenerateBall(double height, double width);
-        public abstract IList<Shape> GetShapes();
-        public abstract void RemoveAllShapes();
+        public abstract IBall GenerateBall(double height, double width);
+        public abstract IList<IBall> GetBalls();
+        public abstract void RemoveAllBalls();
     }
 }

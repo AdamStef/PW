@@ -41,13 +41,13 @@ namespace TPWProject.Tests
         [TestMethod]
         public void CreateBallRepositoryTest()
         {
-            Shape testBall = new Ball(20, 20, 10, 10);
-            Shape testBall2 = new Ball(40, 40, 15, 15);
+            IBall testBall = new Ball(20, 20, 10, 10);
+            IBall testBall2 = new Ball(40, 40, 15, 15);
             BallRepository ballRepository = new BallRepository();
             ballRepository.Add(testBall);
             ballRepository.Add(testBall2);
             Assert.AreEqual(ballRepository.Count(), 2);
-            List<Shape> balls = (List<Shape>)ballRepository.GetAll();
+            List<IBall> balls = (List<IBall>)ballRepository.GetAll();
             Assert.AreSame(balls[0], testBall);
             Assert.AreSame(balls[1], testBall2);
             ballRepository.Remove(testBall2);

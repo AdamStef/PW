@@ -89,7 +89,7 @@ namespace TPWProject.Presentation.ViewModel
             model.Stop();
             model.SetDimensions(Height, Width);
             model.Start(BallsCount);
-            Balls = model.GetShapes();
+            Balls = model.GetBalls();
         }
 
         private void StopButton(object obj)
@@ -99,7 +99,7 @@ namespace TPWProject.Presentation.ViewModel
         private void ClearButton(object obj)
         {
             model.Stop();
-            Balls = model.GetShapes();
+            Balls = model.GetBalls();
         }
 
         public void NumberValidationTextBox(object sender, TextCompositionEventArgs e)

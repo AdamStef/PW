@@ -28,12 +28,12 @@ namespace TPWProject.Data
             return ball;
         }
 
-        public override IList<Shape> GetShapes()
+        public override IList<IBall> GetBalls()
         {
             return BallRepository.GetAll();
         }
 
-        public override void RemoveAllShapes()
+        public override void RemoveAllBalls()
         {
             BallRepository.RemoveAll();
         }

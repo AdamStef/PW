@@ -11,7 +11,7 @@ namespace TPWProject.Tests.FakeDependencies
 {
     public class FakeLogicAPI : AbstractLogicAPI
     {
-        private List<Shape> balls;
+        private List<IBall> balls;
         private double height;
         private double width;
         private bool isRunning = false;
@@ -26,7 +26,7 @@ namespace TPWProject.Tests.FakeDependencies
             balls.Add(new Ball(10, 10, 10, 10));
         }
 
-        public override IList<Shape> GetShapes()
+        public override IList<IBall> GetBalls()
         {
             return balls;
         }

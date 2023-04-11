@@ -4,15 +4,15 @@ using TPWProject.Data.Abstract;
 
 namespace TPWProject.Data
 {
-    public class Ball : Shape, INotifyBallPositionChanged
+    public class Ball : IBall
     {
         private Direction _verticalDirection;
         private Direction _horizontalDirection;
 
-        public override double Top { get; set; }
-        public override double Left { get; set; }
+        public double Top { get; set; }
+        public double Left { get; set; }
         public double Diameter { get; }
-        public override double Mass { get; }
+        public double Mass { get; }
         public double Speed { get; }
 
         public event BallPositionChangedEventHandler BallPositionChanged;
@@ -30,7 +30,7 @@ namespace TPWProject.Data
             _horizontalDirection = random.NextDouble() > 0.5 ? Direction.LEFT : Direction.RIGHT;
         }
 
-        public override void Move(double height, double width)
+        public void Move(double height, double width)
         {
             if (Top - Speed <= 0)
             {

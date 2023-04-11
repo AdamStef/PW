@@ -19,6 +19,6 @@ namespace TPWProject.Logic.Abstract
         public abstract void SetHeight(double height);
         public abstract void SetWidth(double width);
         public abstract void GenerateBalls(int ballsCount);
-        public abstract IList<Shape> GetShapes();
+        public abstract IList<IBall> GetBalls();
     }
 }

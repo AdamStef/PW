@@ -1,8 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System.Linq;
-using TPWProject.Data;
-using TPWProject.Data.Abstract;
 using TPWProject.Logic;
 using TPWProject.Tests.FakeDependencies;
 
@@ -17,7 +14,7 @@ namespace TPWProject.Tests
             var dataAPI = new FakeDataAPI();
             LogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
             logicAPI.GenerateBalls(2);
-            Assert.AreEqual(logicAPI.GetShapes().Count(), 2);
+            Assert.AreEqual(logicAPI.GetBalls().Count(), 2);
         }
 
         [TestMethod]
@@ -27,7 +24,7 @@ namespace TPWProject.Tests
             LogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
             logicAPI.GenerateBalls(2);
             logicAPI.ClearRepository();
-            Assert.AreEqual(logicAPI.GetShapes().Count(), 0);
+            Assert.AreEqual(logicAPI.GetBalls().Count(), 0);
         }
 
         [TestMethod]

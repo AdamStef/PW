@@ -10,36 +10,36 @@ namespace TPWProject.Data
 {
     public class BallRepository : IBallRepository
     {
-        private readonly List<Shape> shapes;
+        private readonly List<IBall> balls;
 
         public BallRepository()
         {
-            shapes = new List<Shape>();
+            balls = new List<IBall>();
         }
 
-        public void Add(Shape ball)
+        public void Add(IBall ball)
         {
-            shapes.Add(ball);
+            balls.Add(ball);
         }
 
-        public void Remove(Shape ball)
+        public void Remove(IBall ball)
         {
-            shapes.Remove(ball);
+            balls.Remove(ball);
         }
 
         public void RemoveAll()
         {
-            shapes.Clear();
+            balls.Clear();
         }
 
-        public IList<Shape> GetAll()
+        public IList<IBall> GetAll()
         {
-            return shapes;
+            return balls;
         }
 
         public int Count()
         {
-            return shapes.Count;
+            return balls.Count;
         }
     }
 }

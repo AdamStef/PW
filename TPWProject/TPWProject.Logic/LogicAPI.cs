@@ -19,8 +19,8 @@ namespace TPWProject.Logic
             else
                 this.dataAPI = AbstractDataAPI.CreateAPI();
 
-            this.Height = height;
-            this.Width = width;
+            Height = height;
+            Width = width;
             IsRunning = false;
         }
 
@@ -35,7 +35,7 @@ namespace TPWProject.Logic
         public override void StartBallMovement()
         {
             IsRunning = true;
-            foreach (var ball in dataAPI.GetShapes())
+            foreach (var ball in dataAPI.GetBalls())
             {
                 Thread thread = new Thread(() =>
                 {
@@ -57,7 +57,7 @@ namespace TPWProject.Logic
 
         public override void ClearRepository()
         {
-            dataAPI.RemoveAllShapes();
+            dataAPI.RemoveAllBalls();
         }
 
         public override void SetHeight(double height)
@@ -70,9 +70,9 @@ namespace TPWProject.Logic
             Width = width;
         }
 
-        public override IList<Shape> GetShapes()
+        public override IList<IBall> GetBalls()
         {
-            return dataAPI.GetShapes();
+            return dataAPI.GetBalls();
         }
     }
 }

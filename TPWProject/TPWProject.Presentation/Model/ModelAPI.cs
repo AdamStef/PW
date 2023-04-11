@@ -28,10 +28,10 @@ namespace TPWProject.Presentation.Model
             logicAPI.ClearRepository();
         }
 
-        public override ObservableCollection<BallModel> GetShapes()
+        public override ObservableCollection<BallModel> GetBalls()
         {
             ObservableCollection<BallModel> balls = new ObservableCollection<BallModel>();
-            foreach (Ball ball in logicAPI.GetShapes())
+            foreach (Ball ball in logicAPI.GetBalls())
                 balls.Add(new BallModel(ball));
             return balls;
         }

@@ -10,7 +10,7 @@ namespace TPWProject.Presentation.Model
             return new ModelAPI(height, width);
         }
 
-        public abstract ObservableCollection<BallModel> GetShapes();
+        public abstract ObservableCollection<BallModel> GetBalls();
         public abstract void SetHeight(double height);
         public abstract void SetWidth(double width);
         public abstract void SetDimensions(double height, double width);

@@ -10,10 +10,10 @@ namespace TPWProject.Data.Abstract
 {
     public interface IBallRepository
     {
-        public void Add(Shape ball);
-        public void Remove(Shape ball);
+        public void Add(IBall ball);
+        public void Remove(IBall ball);
         public void RemoveAll();
-        public IList<Shape> GetAll();
+        public IList<IBall> GetAll();
         public int Count();
     }
 }
