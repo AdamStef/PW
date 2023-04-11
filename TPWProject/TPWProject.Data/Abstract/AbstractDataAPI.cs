@@ -8,7 +8,7 @@ namespace TPWProject.Data.Abstract
 {
     public abstract class AbstractDataAPI
     {
-        protected IBallRepository ballRepository;
+        //protected IBallRepository ballRepository;
         //public abstract int Height { get; set; }
         //public abstract int Width { get; set; }
         public static AbstractDataAPI CreateAPI()

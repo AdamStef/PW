@@ -19,35 +19,6 @@ namespace TPWProject.Logic
             this.width = width;
         }
 
-        //public override void MoveBall(Shape ball, double top, double left)
-        //{
-        //    if (top < 0)
-        //    {
-        //        top = 0;
-        //    }
-        //    else if (top > height - ball.Height)
-        //    {
-        //        top = height - ball.Height;
-        //    }
-        //    if (left < 0)
-        //    {
-        //        left = 0;
-        //    }
-        //    else if (left > width - ball.Width)
-        //    {
-        //        left = width - ball.Width;
-        //    }
-        //    ball.Top = top;
-        //    ball.Left = left;
-        //}
-        //public override void MoveBalls()
-        //{
-        //    foreach (var ball in dataAPI.BallRepository.GetAll())
-        //    {
-        //        MoveBall(ball, ball.Top + ball.VelocityY, ball.Left + ball.VelocityX);
-        //    }
-        //}
-
         public override void GenerateBalls(int ballsCount)
         {
             for (int i = 0; i < ballsCount; i++)
@@ -66,7 +37,7 @@ namespace TPWProject.Logic
                     while(isRunning)
                     {
                         ball.Move(height, width);
-                        Thread.Sleep(200);
+                        Thread.Sleep(5);
                     }
                 });
                 thread.Start();

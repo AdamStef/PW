@@ -15,54 +15,66 @@ namespace TPWProject.Data
     {
         private double _top;
         private double _left;
+        private Direction _verticalDirection;
+        private Direction _horizontalDirection;
 
         public override double Top { get => _top; set { _top = value; OnPropertyChanged(); } }
         public override double Left { get => _left; set { _left = value; OnPropertyChanged(); } }
         public double Diameter { get; }
         public override double Mass { get; }
-        public int Speed { get; }
+        public double Speed { get; }
 
 
         public Ball(double top, double left, double diameter, double mass)
         {
+            Random random = new Random();
             Top = top;
             Left = left;
             Diameter = diameter;
             Mass = mass;
-            Speed = 20;
+            Speed = 0.5;
+            _verticalDirection = random.NextDouble() > 0.5 ? Direction.UP : Direction.DOWN;
+            _horizontalDirection = random.NextDouble() > 0.5 ? Direction.LEFT : Direction.RIGHT;
         }
 
         public override void Move(double height, double width)
         {
             Random random = new Random();
-            double topsum = (random.NextDouble() - 0.5) * Speed;
-            double leftsum = (random.NextDouble() - 0.5) * Speed;
-            if (Top + topsum <= 0)
+            if (Top - Speed <= 0)
             {
-                Top = 0;
+                _verticalDirection = Direction.DOWN;
             }
-            else if (Top + topsum + Diameter >= height)
+            else if (Top + Speed + Diameter >= height)
             {
-                Top = height - Diameter;
+                _verticalDirection = Direction.UP;
+            }
+
+            if (Left - Speed <= 0)
+            {
+                _horizontalDirection = Direction.RIGHT;
+            }
+            else if (Left + Speed + Diameter >= width)
+            {
+                _horizontalDirection = Direction.LEFT;
+            }
+
+            if (_verticalDirection == Direction.DOWN)
+            {
+                Top += Speed;
             }
             else
             {
-                Top += topsum;
+                Top -= Speed;
             }
 
-            if (Left + leftsum <= 0)
+            if (_horizontalDirection == Direction.RIGHT)
             {
-                Left = 0;
-            }
-            else if (Left + leftsum + Diameter >= width)
-            {
-                Left = width - Diameter;
+                Left += Speed;
             }
             else
             {
-                Left += leftsum;
+                Left -= Speed;
             }
-
         }
     }
 }

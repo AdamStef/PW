@@ -23,7 +23,7 @@ namespace TPWProject.Presentation.Model
         private double _top;
         private double _left;
         private double _diameter;
-        private int _speed;
+        private double _speed;
         private double _mass;
 
         public double Top
@@ -41,7 +41,7 @@ namespace TPWProject.Presentation.Model
             get => _diameter;
             set { _diameter = value; OnPropertyChanged(); }
         }
-        public int Speed
+        public double Speed
         {
             get => _speed;
             set { _speed = value; OnPropertyChanged(); }
