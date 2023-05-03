@@ -69,7 +69,7 @@ namespace TPWProject.Tests.FakeDependencies
             isRunning = true;
         }
 
-        public override void StopMovement()
+        public override void StopSimulation()
         {
             isRunning = false;
         }

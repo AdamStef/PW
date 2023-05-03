@@ -5,16 +5,15 @@ namespace TPWProject.Presentation.Model
 {
     public abstract class AbstractModelAPI
     {
-        public static ModelAPI CreateAPI(double height, double width)
+        public static ModelAPI CreateAPI()
         {
-            return new ModelAPI(height, width);
+            return new ModelAPI();
         }
 
         public abstract ObservableCollection<BallModel> GetBalls();
         public abstract void SetHeight(double height);
         public abstract void SetWidth(double width);
-        public abstract void SetDimensions(double height, double width);
-        public abstract void Start(int numberOfBalls);
+        public abstract void Start(double height, double width, int ballCount);
         public abstract void Stop();
     }
 }

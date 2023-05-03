@@ -8,24 +8,22 @@ namespace TPWProject.Presentation.Model
     {
         private readonly AbstractLogicAPI logicAPI;
 
-        public ModelAPI(double height, double width, AbstractLogicAPI? logicAPI = null)
+        public ModelAPI(AbstractLogicAPI? logicAPI = null)
         {
             if (logicAPI != null)
                 this.logicAPI = logicAPI;
             else
-                this.logicAPI = AbstractLogicAPI.CreateAPI(height, width);
+                this.logicAPI = AbstractLogicAPI.CreateAPI();
         }
 
-        public override void Start(int numberOfBalls)
+        public override void Start(double height, double width, int ballCount)
         {
-            logicAPI.GenerateBalls(numberOfBalls);
-            logicAPI.StartBallMovement();
+            logicAPI.StartSimulation(height, width, ballCount);
         }
 
         public override void Stop()
         {
-            logicAPI.StopMovement();
-            logicAPI.ClearRepository();
+            logicAPI.StopSimulation();
         }
 
         public override ObservableCollection<BallModel> GetBalls()
@@ -33,6 +31,7 @@ namespace TPWProject.Presentation.Model
             ObservableCollection<BallModel> balls = new ObservableCollection<BallModel>();
             foreach (Ball ball in logicAPI.GetBalls())
                 balls.Add(new BallModel(ball));
+
             return balls;
         }
 
@@ -43,12 +42,6 @@ namespace TPWProject.Presentation.Model
 
         public override void SetWidth(double width)
         {
-            logicAPI.SetWidth(width);
-        }
-
-        public override void SetDimensions(double height, double width)
-        {
-            logicAPI.SetHeight(height);
             logicAPI.SetWidth(width);
         }
     }

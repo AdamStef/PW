@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
+using TPWProject.Data;
 using TPWProject.Data.Abstract;
 using TPWProject.Logic.Abstract;
 
@@ -8,86 +8,54 @@ namespace TPWProject.Logic
     public class LogicAPI : AbstractLogicAPI
     {
         private readonly AbstractDataAPI dataAPI;
-        public double Height { get; private set; }
-        public double Width { get; private set; }
-        public bool IsRunning { get; private set; }
+        
 
-        public LogicAPI(double height, double width, AbstractDataAPI dataAPI = null)
+        public LogicAPI(AbstractDataAPI dataAPI = null)
         {
             if (dataAPI != null)
                 this.dataAPI = dataAPI;
             else
                 this.dataAPI = AbstractDataAPI.CreateAPI();
-
-            Height = height;
-            Width = width;
-            IsRunning = false;
         }
-
-        public override void GenerateBalls(int ballsCount)
+        public override void StartSimulation(double height, double width, int ballCount)
         {
-            for (int i = 0; i < ballsCount; i++)
+            dataAPI.CreateSimulation(height, width, ballCount);
+            foreach (Ball ball in dataAPI.GetBalls())
             {
-                dataAPI.GenerateBall(Height, Width);
+                ball.BallPositionChanged += CheckCollisionsOnBallPositionChanged;
             }
         }
 
-        public override void StartBallMovement()
+        public override void StopSimulation()
         {
-            IsRunning = true;
-            foreach (var ball in dataAPI.GetBalls())
-            {
-                Thread thread = new Thread(() =>
-                {
-                    while(IsRunning)
-                    {
-                        ball.Move(Height, Width);
-                        Thread.Sleep(5);
-                    }
-                });
-                thread.IsBackground = true;
-                thread.Start();
-            }
-        }
-
-        public override void StopMovement()
-        {
-            IsRunning = false;
-        }
-
-        public override void ClearRepository()
-        {
+            dataAPI.StopMovement();
             dataAPI.RemoveAllBalls();
         }
 
-        public override void SetHeight(double height)
+        public override void CheckCollisions(Ball ball)
         {
-            Height = height;
+            //TODO: Check Collision
         }
 
-        public override void SetWidth(double width)
-        {
-            Width = width;
-        }
-
-        public override double GetHeight()
-        {
-            return Height;
-        }
-
-        public override double GetWidth()
-        {
-            return Width;
-        }
-
-        public override IList<IBall> GetBalls()
+        public override List<IBall> GetBalls()
         {
             return dataAPI.GetBalls();
         }
 
-        public override bool GetIsRunning()
+        public override void SetHeight(double height)
         {
-            return IsRunning;
+            dataAPI.GetBoundary().Height = height;
+        }
+
+        public override void SetWidth(double width)
+        {
+            dataAPI.GetBoundary().Width = width;
+        }
+
+        private void CheckCollisionsOnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
+        {
+            Ball ball = (Ball)sender;
+            CheckCollisions(ball);
         }
     }
 }

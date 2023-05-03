@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using TPWProject.Data;
-using TPWProject.Data.Abstract;
 using TPWProject.Presentation.Model;
 
 namespace TPWProject.Presentation.ViewModel
@@ -18,6 +9,7 @@ namespace TPWProject.Presentation.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private ModelAPI model;
+
         private ObservableCollection<BallModel> _balls;
         private int _ballsCount;
         private double _height;
@@ -75,7 +67,7 @@ namespace TPWProject.Presentation.ViewModel
             StartButtonCommand = new RelayCommand(StartButton);
             StopButtonCommand = new RelayCommand(StopButton);
             ClearButtonCommand = new RelayCommand(ClearButton);
-            model = new ModelAPI(Height, Width);
+            model = new ModelAPI();
             _balls = new ObservableCollection<BallModel>();
         }
 
@@ -87,8 +79,7 @@ namespace TPWProject.Presentation.ViewModel
                 return;
             }
             model.Stop();
-            model.SetDimensions(Height, Width);
-            model.Start(BallsCount);
+            model.Start(Height, Width, BallsCount);
             Balls = model.GetBalls();
         }
 

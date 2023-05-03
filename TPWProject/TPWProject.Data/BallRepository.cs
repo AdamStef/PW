@@ -32,7 +32,7 @@ namespace TPWProject.Data
             balls.Clear();
         }
 
-        public IList<IBall> GetAll()
+        public List<IBall> GetAll()
         {
             return balls;
         }
@@ -40,6 +40,11 @@ namespace TPWProject.Data
         public int Count()
         {
             return balls.Count;
+        }
+
+        public void Clear()
+        {
+            balls.Clear();
         }
     }
 }

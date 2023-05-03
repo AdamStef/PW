@@ -10,32 +10,63 @@ namespace TPWProject.Data
 {
     public class DataAPI : AbstractDataAPI
     {
-        public IBallRepository BallRepository { get; set; }
+        //public IBallRepository BallRepository { get; set; }
+        public Boundary Boundary { get; private set; }
+        public bool IsRunning { get; private set; }
+
+        private readonly object locked = new object();
 
         public DataAPI()
         {
-            BallRepository = new BallRepository();
-        }
-        public override Ball GenerateBall(double height, double width)
-        {
-            Random random = new Random();
-            double diameter = random.Next(50, 80);
-            double x = random.NextDouble() * (width - diameter);
-            double y = random.NextDouble() * (height - diameter);
-            double mass = random.NextDouble() * 5.0;
-            Ball ball = new Ball(y, x, diameter, mass);
-            BallRepository.Add(ball);
-            return ball;
+            Boundary = new Boundary(0, 0);
         }
 
-        public override IList<IBall> GetBalls()
+        public override List<IBall> GetBalls()
         {
-            return BallRepository.GetAll();
+            return Boundary.GetAll();
         }
 
         public override void RemoveAllBalls()
         {
-            BallRepository.RemoveAll();
+            Boundary.RemoveAll();
+        }
+
+        public override void CreateSimulation(double height, double width, int ballCount)
+        {
+            Boundary = new Boundary(width, height);
+            Boundary.GenerateBalls(ballCount);
+            StartBallMovement();
+        }
+
+        public override Boundary GetBoundary()
+        {
+            return Boundary;
+        }
+
+        private void StartBallMovement()
+        {
+            IsRunning = true;
+            foreach (Ball ball in Boundary.GetAll())
+            {
+                Thread thread = new Thread(() =>
+                {
+                    while (IsRunning)
+                    {
+                        lock (locked)
+                        {
+                            ball.Move(Boundary.Height, Boundary.Width);
+                        }
+                        Thread.Sleep(5);
+                    }
+                });
+                thread.IsBackground = true;
+                thread.Start();
+            }
+        }
+
+        public override void StopMovement()
+        {
+            IsRunning = false;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace TPWProject.Tests
             logicAPI.GenerateBalls(2);
             logicAPI.StartBallMovement();
             Assert.IsTrue(logicAPI.GetIsRunning());
-            logicAPI.StopMovement();
+            logicAPI.StopSimulation();
             Assert.IsFalse(logicAPI.GetIsRunning());
         }
 

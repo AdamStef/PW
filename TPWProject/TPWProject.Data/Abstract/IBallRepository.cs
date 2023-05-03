@@ -13,7 +13,8 @@ namespace TPWProject.Data.Abstract
         public void Add(IBall ball);
         public void Remove(IBall ball);
         public void RemoveAll();
-        public IList<IBall> GetAll();
+        public List<IBall> GetAll();
         public int Count();
+        public void Clear();
     }
 }
