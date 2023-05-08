@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using TPWProject.Data;
 using TPWProject.Data.Abstract;
@@ -76,8 +77,37 @@ namespace TPWProject.Logic
 
         private void CheckBallsCollision(Ball ball)
         {
-            //TODO: Check Collision
-            //Debug.WriteLine("Checking collision for ball");
+            foreach (Ball b in dataAPI.GetBalls())
+            {
+                if (b == ball)
+                {
+                    continue;
+                }
+                double xCenter = ball.Left + ball.Diameter / 2;
+                double yCenter = ball.Top + ball.Diameter / 2;
+
+                double distance = Math.Sqrt(Math.Pow(b.Left + (b.Diameter * 0.5) - xCenter, 2) + Math.Pow(b.Top + (b.Diameter * 0.5) - yCenter, 2));
+                if (distance <= 0.5 * (b.Diameter + ball.Diameter))
+                {
+                    Collision(ball, b);
+                }
+            }
+        }
+
+
+        private void Collision(Ball b1, Ball b2)
+        {
+            double b1SpeedX = b1.SpeedX;
+            double b2SpeedX = b2.SpeedX;
+
+            double b1SpeedY = b1.SpeedY;
+            double b2SpeedY = b2.SpeedY;
+
+            b1.SpeedX = (b1SpeedX * (b1.Mass - b2.Mass) + 2 * b2.Mass * b2SpeedX) / (b1.Mass + b2.Mass);
+            b2.SpeedX = (b2SpeedX * (b2.Mass - b1.Mass) + 2 * b1.Mass * b1SpeedX) / (b1.Mass + b2.Mass);
+
+            b1.SpeedY = (b1SpeedY * (b1.Mass - b2.Mass) + 2 * b2.Mass * b2SpeedY) / (b1.Mass + b2.Mass);
+            b2.SpeedY = (b2SpeedY * (b2.Mass - b1.Mass) + 2 * b1.Mass * b1SpeedY) / (b1.Mass + b2.Mass);
         }
 
         private void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
@@ -85,7 +115,6 @@ namespace TPWProject.Logic
             Ball ball = (Ball)sender;
             CheckBoundaryCollision(ball);
             CheckBallsCollision(ball);
-            Debug.WriteLine($"Checking collision for ball, pos: {args.Top} x {args.Left}; prev pos: {args.PrevTop} x {args.PrevLeft}");
         }
     }
 }
