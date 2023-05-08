@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using TPWProject.Data;
 using TPWProject.Data.Abstract;
 using TPWProject.Logic.Abstract;
@@ -17,12 +18,13 @@ namespace TPWProject.Logic
             else
                 this.dataAPI = AbstractDataAPI.CreateAPI();
         }
+
         public override void StartSimulation(double height, double width, int ballCount)
         {
             dataAPI.CreateSimulation(height, width, ballCount);
             foreach (Ball ball in dataAPI.GetBalls())
             {
-                ball.BallPositionChanged += CheckCollisionsOnBallPositionChanged;
+                ball.BallPositionChanged += OnBallPositionChanged;
             }
         }
 
@@ -35,6 +37,7 @@ namespace TPWProject.Logic
         public override void CheckCollisions(Ball ball)
         {
             //TODO: Check Collision
+            //Debug.WriteLine("Checking collision for ball");
         }
 
         public override List<IBall> GetBalls()
@@ -52,10 +55,11 @@ namespace TPWProject.Logic
             dataAPI.GetBoundary().Width = width;
         }
 
-        private void CheckCollisionsOnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
+        private void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
         {
             Ball ball = (Ball)sender;
             CheckCollisions(ball);
+            Debug.WriteLine($"Checking collision for ball, pos: {args.Top} x {args.Left}; prev pos: {args.PrevTop} x {args.PrevLeft}");
         }
     }
 }
