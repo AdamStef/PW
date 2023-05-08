@@ -32,6 +32,9 @@ namespace TPWProject.Data
 
         public void Move(double height, double width)
         {
+            double prevTop = Top;
+            double prevLeft = Left;
+
             if (Top - Speed <= 0)
             {
                 _verticalDirection = Direction.DOWN;
@@ -68,7 +71,7 @@ namespace TPWProject.Data
                 Left -= Speed;
             }
 
-            BallPositionChanged?.Invoke(this, new BallPositionChangedEventArgs(Top, Left));
+            BallPositionChanged?.Invoke(this, new BallPositionChangedEventArgs(Top, Left, prevTop, prevLeft));
         }
     }
 }

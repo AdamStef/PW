@@ -13,12 +13,12 @@ namespace TPWProject.Data
         public double PrevLeft { get; private set; }
         public double Top { get; private set; }
         public double Left { get; private set; }
-        public BallPositionChangedEventArgs(double top, double left)
+        public BallPositionChangedEventArgs(double top, double left, double prevTop, double prevLeft)
         {
-            PrevTop = Top;
-            PrevLeft = Left;
             Top = top;
             Left = left;
+            PrevTop = prevTop;
+            PrevLeft = prevLeft;
         }
     }
 }
