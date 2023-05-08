@@ -17,7 +17,7 @@ namespace TPWProject.Logic.Abstract
         }
         public abstract void StartSimulation(double height, double width, int ballCount);
         public abstract void StopSimulation();
-        public abstract void CheckCollisions(Ball ball);
+        //public abstract void CheckCollisions(Ball ball);
         public abstract List<IBall> GetBalls();
         public abstract void SetHeight(double height);
         public abstract void SetWidth(double width);

@@ -8,6 +8,7 @@ namespace TPWProject.Data.Abstract
 {
     public abstract class AbstractDataAPI
     {
+        public Boundary Boundary { get; set; }
         public static AbstractDataAPI CreateAPI()
         {
             return new DataAPI();

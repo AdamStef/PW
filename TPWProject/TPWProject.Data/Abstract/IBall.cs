@@ -14,7 +14,8 @@ namespace TPWProject.Data.Abstract
         double Left { get; set; }
         double Diameter { get; }
         double Mass { get; }
-        double Speed { get; }
+        double SpeedX { get; }
+        double SpeedY { get; }
 
         void Move(double height, double width);
     }

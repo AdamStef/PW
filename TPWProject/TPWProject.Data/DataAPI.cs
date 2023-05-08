@@ -11,7 +11,7 @@ namespace TPWProject.Data
     public class DataAPI : AbstractDataAPI
     {
         //public IBallRepository BallRepository { get; set; }
-        public Boundary Boundary { get; private set; }
+        //public Boundary Boundary { get; private set; }
         public bool IsRunning { get; private set; }
 
         private readonly object locked = new object();
