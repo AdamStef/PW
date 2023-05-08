@@ -6,9 +6,6 @@ namespace TPWProject.Data
 {
     public class Ball : IBall
     {
-        //private Direction _verticalDirection;
-        //private Direction _horizontalDirection;
-
         public double Top { get; set; }
         public double Left { get; set; }
         public double Diameter { get; }
@@ -28,8 +25,6 @@ namespace TPWProject.Data
             Mass = mass;
             SpeedX = random.NextDouble() + 0.5;
             SpeedY = random.NextDouble() + 0.5;
-            //_verticalDirection = random.NextDouble() > 0.5 ? Direction.UP : Direction.DOWN;
-            //_horizontalDirection = random.NextDouble() > 0.5 ? Direction.LEFT : Direction.RIGHT;
         }
 
         public void Move(double height, double width)

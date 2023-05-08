@@ -9,8 +9,6 @@ namespace TPWProject.Data
 {
     public class Boundary
     {
-        //public double Top { get; set; }
-        //public double Left { get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
 
@@ -21,18 +19,37 @@ namespace TPWProject.Data
             Width = width;
             Height = height;
             ballRepository = new BallRepository();
-            //GenerateBalls(ballCount);
         }
 
         private Ball GenerateBall()
         {
             Random random = new Random();
-            double diameter = random.Next(50, 80);
-            double x = random.NextDouble() * (Width - diameter);
-            double y = random.NextDouble() * (Height - diameter);
-            double mass = random.NextDouble() * 5.0;
 
-            // TODO: Check if within other balls
+            bool within;
+            double diameter;
+            double x;
+            double y;
+            double mass;
+            do
+            {
+                within = false;
+                diameter = random.Next(50, 80);
+                x = random.NextDouble() * (Width - diameter);
+                y = random.NextDouble() * (Height - diameter);
+                mass = random.NextDouble() * 5.0;
+
+                double xCenter = x + diameter / 2;
+                double yCenter = y + diameter / 2;
+
+                foreach (var b in ballRepository.GetAll())
+                {
+                    double distance = Math.Sqrt(Math.Pow(b.Left + (b.Diameter * 0.5) - xCenter, 2) + Math.Pow(b.Top + (b.Diameter * 0.5) - yCenter, 2));
+                    if (distance <= 0.5 * (b.Diameter + diameter))
+                    {
+                        within = true;
+                    }
+                }
+            } while (within);
 
             Ball ball = new Ball(y, x, diameter, mass);
             return ball;
