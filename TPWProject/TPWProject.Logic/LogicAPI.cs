@@ -141,6 +141,47 @@ namespace TPWProject.Logic
             }
         }
 
+
+        //private void CheckBallsCollision(Ball ball)
+        //{
+        //    foreach (Ball otherBall in dataAPI.GetBalls())
+        //    {
+        //        if (otherBall != ball) // Avoid self-collision
+        //        {
+        //            double distance = Math.Sqrt(Math.Pow(otherBall.Top - ball.Top, 2) + Math.Pow(otherBall.Left - ball.Left, 2));
+
+        //            if (distance <= ball.Diameter / 2 + otherBall.Diameter / 2)
+        //            {
+        //                // Calculate the collision angle
+        //                double angle = Math.Atan2(otherBall.Top - ball.Top, otherBall.Left - ball.Left);
+
+        //                // Calculate the new velocities after the collision
+        //                double newSpeedX1 = ball.SpeedX * Math.Cos(angle) + ball.SpeedY * Math.Sin(angle);
+        //                double newSpeedY1 = ball.SpeedY * Math.Cos(angle) - ball.SpeedX * Math.Sin(angle);
+        //                double newSpeedX2 = otherBall.SpeedX * Math.Cos(angle) + otherBall.SpeedY * Math.Sin(angle);
+        //                double newSpeedY2 = otherBall.SpeedY * Math.Cos(angle) - otherBall.SpeedX * Math.Sin(angle);
+
+        //                // Update the ball velocities
+        //                ball.SpeedX = newSpeedX2;
+        //                ball.SpeedY = newSpeedY1;
+        //                otherBall.SpeedX = newSpeedX1;
+        //                otherBall.SpeedY = newSpeedY2;
+
+        //                // Update the ball positions to avoid overlap
+        //                double overlap = ball.Diameter / 2 + otherBall.Diameter / 2 - distance;
+        //                ball.Top -= overlap / 2 * Math.Sin(angle);
+        //                ball.Left -= overlap / 2 * Math.Cos(angle);
+        //                otherBall.Top += overlap / 2 * Math.Sin(angle);
+        //                otherBall.Left += overlap / 2 * Math.Cos(angle);
+
+        //                // Invoke the BallPositionChanged event to notify subscribers of the new positions
+        //                ball.Move();
+        //                otherBall.Move();
+        //            }
+        //        }
+        //    }
+        //}
+
         private void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
         {
             Ball ball = (Ball)sender;
