@@ -42,31 +42,5 @@ namespace TPWProject.Data
         {
             return Boundary;
         }
-
-        private void StartBallMovement()
-        {
-            IsRunning = true;
-            foreach (Ball ball in Boundary.GetAll())
-            {
-                Thread thread = new Thread(() =>
-                {
-                    while (IsRunning)
-                    {
-                        lock (locked)
-                        {
-                            ball.Move();
-                        }
-                        Thread.Sleep(5);
-                    }
-                });
-                thread.IsBackground = true;
-                thread.Start();
-            }
-        }
-
-        public override void StopMovement()
-        {
-            IsRunning = false;
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TPWProject.Presentation.Model;
@@ -73,24 +74,33 @@ namespace TPWProject.Presentation.ViewModel
 
         private void StartButton(object obj)
         {
-            if (BallsCount > 30)
+            Task.Run(() =>
             {
-                MessageBox.Show("Max number of balls is 30", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            model.Stop();
-            model.Start(Height, Width, BallsCount);
-            Balls = model.GetBalls();
+                if (BallsCount > 30)
+                {
+                    MessageBox.Show("Max number of balls is 30", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                model.Stop();
+                model.Start(Height, Width, BallsCount);
+                Balls = model.GetBalls();
+            });
         }
 
         private void StopButton(object obj)
         {
-            model.Stop();
+            Task.Run(() =>
+            {
+                model.Stop();
+            });
         }
         private void ClearButton(object obj)
         {
-            model.Stop();
-            Balls = model.GetBalls();
+            Task.Run(() =>
+            {
+                model.Stop();
+                Balls = model.GetBalls();
+            });
         }
 
         public void NumberValidationTextBox(object sender, TextCompositionEventArgs e)

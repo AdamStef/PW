@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using TPWProject.Data;
 using TPWProject.Data.Abstract;
 using TPWProject.Logic.Abstract;
@@ -92,13 +93,23 @@ namespace TPWProject.Logic
                         lock (locked)
                         {
                             ball.Move();
-                            CheckBallCollisions();
                         }
-                    Thread.Sleep(5);
+                        Thread.Sleep(10);
                     }
                 });
                 thread.IsBackground = true;
                 thread.Start();
+                //Task.Run(async () =>
+                //{
+                //    while (IsRunning)
+                //    {
+                //        lock (locked)
+                //        {
+                //            ball.Move();
+                //        }
+                //        await Task.Delay(5);
+                //    }
+                //});
             }
         }
 
@@ -117,7 +128,7 @@ namespace TPWProject.Logic
                 {
                     Ball ball2 = (Ball)balls[j];
                     double distance = Math.Sqrt(Math.Pow(ball2.Top - ball1.Top, 2) + Math.Pow(ball2.Left - ball1.Left, 2));
-                    double minDistance = (ball1.Diameter/2 + ball2.Diameter/2) * 0.9;
+                    double minDistance = (ball1.Diameter / 2 + ball2.Diameter / 2);
                     if (distance <= minDistance)
                     {
                         double totalMass = ball1.Mass + ball2.Mass;
@@ -135,6 +146,14 @@ namespace TPWProject.Logic
                             ball1.SpeedY = v1y;
                             ball2.SpeedX = v2x;
                             ball2.SpeedY = v2y;
+
+                            double angle = Math.Atan2(ball2.Top - ball1.Top, ball2.Left - ball1.Left);
+                            // Update the ball positions to avoid overlap
+                            //double overlap = ball1.Diameter / 2 + ball2.Diameter / 2 - distance;
+                            //ball1.Top -= overlap / 2 * Math.Sin(angle);
+                            //ball1.Left -= overlap / 2 * Math.Cos(angle);
+                            //ball2.Top += overlap / 2 * Math.Sin(angle);
+                            //ball2.Left += overlap / 2 * Math.Cos(angle);
                         }
                     }
                 }
@@ -185,7 +204,11 @@ namespace TPWProject.Logic
         private void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
         {
             Ball ball = (Ball)sender;
-            CheckBoundaryCollision(ball);
+            lock (locked)
+            {
+                CheckBoundaryCollision(ball);
+                CheckBallCollisions();
+            }
         }
     }
 }

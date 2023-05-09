@@ -18,6 +18,5 @@ namespace TPWProject.Data.Abstract
         public abstract void RemoveAllBalls();
         public abstract void CreateSimulation(double height, double width, int ballCount);
         public abstract Boundary GetBoundary();
-        public abstract void StopMovement();
     }
 }
