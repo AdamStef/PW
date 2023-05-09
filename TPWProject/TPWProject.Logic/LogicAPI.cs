@@ -92,8 +92,7 @@ namespace TPWProject.Logic
                         lock (locked)
                         {
                             ball.Move();
-                            //HandleCollisions(ball);
-                            CheckBallsCollision(ball);
+                            CheckBallCollisions();
                         }
                     Thread.Sleep(5);
                     }
@@ -108,41 +107,35 @@ namespace TPWProject.Logic
             IsRunning = false;
         }
 
-        private void CheckBallsCollision(Ball ball)
+        private void CheckBallCollisions()
         {
-            foreach (Ball otherBall in dataAPI.GetBalls())
+            List<IBall> balls = dataAPI.GetBalls();
+            for (int i = 0; i < balls.Count - 1; i++)
             {
-                if (otherBall != ball) // Avoid self-collision
+                Ball ball1 = (Ball)balls[i];
+                for (int j = i + 1; j < balls.Count; j++)
                 {
-                    double distance = Math.Sqrt(Math.Pow(otherBall.Top - ball.Top, 2) + Math.Pow(otherBall.Left - ball.Left, 2));
-
-                    if (distance <= ball.Diameter / 2 + otherBall.Diameter / 2)
+                    Ball ball2 = (Ball)balls[j];
+                    double distance = Math.Sqrt(Math.Pow(ball2.Top - ball1.Top, 2) + Math.Pow(ball2.Left - ball1.Left, 2));
+                    double minDistance = (ball1.Diameter/2 + ball2.Diameter/2) * 0.9;
+                    if (distance <= minDistance)
                     {
-                        // Calculate the collision angle
-                        double angle = Math.Atan2(otherBall.Top - ball.Top, otherBall.Left - ball.Left);
+                        double totalMass = ball1.Mass + ball2.Mass;
+                        double v1x = (ball1.SpeedX * (ball1.Mass - ball2.Mass) + 2 * ball2.Mass * ball2.SpeedX) / totalMass;
+                        double v1y = (ball1.SpeedY * (ball1.Mass - ball2.Mass) + 2 * ball2.Mass * ball2.SpeedY) / totalMass;
+                        double v2x = (ball2.SpeedX * (ball2.Mass - ball1.Mass) + 2 * ball1.Mass * ball1.SpeedX) / totalMass;
+                        double v2y = (ball2.SpeedY * (ball2.Mass - ball1.Mass) + 2 * ball1.Mass * ball1.SpeedY) / totalMass;
 
-                        // Calculate the new velocities after the collision
-                        double newSpeedX1 = ball.SpeedX * Math.Cos(angle) + ball.SpeedY * Math.Sin(angle);
-                        double newSpeedY1 = ball.SpeedY * Math.Cos(angle) - ball.SpeedX * Math.Sin(angle);
-                        double newSpeedX2 = otherBall.SpeedX * Math.Cos(angle) + otherBall.SpeedY * Math.Sin(angle);
-                        double newSpeedY2 = otherBall.SpeedY * Math.Cos(angle) - otherBall.SpeedX * Math.Sin(angle);
-
-                        // Update the ball velocities
-                        ball.SpeedX = newSpeedX2;
-                        ball.SpeedY = newSpeedY1;
-                        otherBall.SpeedX = newSpeedX1;
-                        otherBall.SpeedY = newSpeedY2;
-
-                        // Update the ball positions to avoid overlap
-                        double overlap = ball.Diameter / 2 + otherBall.Diameter / 2 - distance;
-                        ball.Top -= overlap / 2 * Math.Sin(angle);
-                        ball.Left -= overlap / 2 * Math.Cos(angle);
-                        otherBall.Top += overlap / 2 * Math.Sin(angle);
-                        otherBall.Left += overlap / 2 * Math.Cos(angle);
-
-                        // Invoke the BallPositionChanged event to notify subscribers of the new positions
-                        ball.Move();
-                        otherBall.Move();
+                        // Check if balls are moving towards each other before updating speeds
+                        if ((v1x - ball1.SpeedX) * (ball2.Left - ball1.Left) + (v1y - ball1.SpeedY) * (ball2.Top - ball1.Top) < 0 &&
+                            (v2x - ball2.SpeedX) * (ball1.Left - ball2.Left) + (v2y - ball2.SpeedY) * (ball1.Top - ball2.Top) < 0)
+                        {
+                            // Balls are moving towards each other, update speeds
+                            ball1.SpeedX = v1x;
+                            ball1.SpeedY = v1y;
+                            ball2.SpeedX = v2x;
+                            ball2.SpeedY = v2y;
+                        }
                     }
                 }
             }
