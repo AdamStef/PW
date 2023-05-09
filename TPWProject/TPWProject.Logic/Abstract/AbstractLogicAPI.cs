@@ -11,13 +11,14 @@ namespace TPWProject.Logic.Abstract
 {
     public abstract class AbstractLogicAPI
     {
+        public bool IsRunning { get; protected set; }
+
         public static AbstractLogicAPI CreateAPI()
         {
             return new LogicAPI();
         }
         public abstract void StartSimulation(double height, double width, int ballCount);
         public abstract void StopSimulation();
-        //public abstract void CheckCollisions(Ball ball);
         public abstract List<IBall> GetBalls();
         public abstract void SetHeight(double height);
         public abstract void SetWidth(double width);

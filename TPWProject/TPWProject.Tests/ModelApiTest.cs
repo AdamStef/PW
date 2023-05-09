@@ -11,8 +11,8 @@ namespace TPWProject.Tests
         public void ModelAPITest()
         {
             var logicAPI = new FakeLogicAPI();
-            AbstractModelAPI modelAPI = new ModelAPI(100, 100, logicAPI);
-            modelAPI.Start(2);
+            AbstractModelAPI modelAPI = new ModelAPI(logicAPI);
+            modelAPI.Start(100, 100, 2);
             Assert.AreEqual(modelAPI.GetBalls().Count, 2);
             modelAPI.Stop();
             Assert.AreEqual(modelAPI.GetBalls().Count, 0);

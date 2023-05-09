@@ -1,5 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Threading;
+using System.Windows.Documents;
+using TPWProject.Data;
+using TPWProject.Data.Abstract;
 using TPWProject.Logic;
 using TPWProject.Logic.Abstract;
 using TPWProject.Tests.FakeDependencies;
@@ -13,42 +19,52 @@ namespace TPWProject.Tests
         public void GenerateBallsTest()
         {
             var dataAPI = new FakeDataAPI();
-            AbstractLogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
-            logicAPI.GenerateBalls(2);
-            Assert.AreEqual(logicAPI.GetBalls().Count(), 2);
+            AbstractLogicAPI logicAPI = new LogicAPI(dataAPI);
+            logicAPI.StartSimulation(100, 100, 2);
+            Assert.AreEqual(logicAPI.GetBalls().Count, 2);
         }
 
         [TestMethod]
         public void ClearRepositoryTest()
         {
             var dataAPI = new FakeDataAPI();
-            AbstractLogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
-            logicAPI.GenerateBalls(2);
-            logicAPI.ClearRepository();
-            Assert.AreEqual(logicAPI.GetBalls().Count(), 0);
-        }
-
-        [TestMethod]
-        public void StartStopMovementTest()
-        {
-            var dataAPI = new FakeDataAPI();
-            AbstractLogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
-            logicAPI.GenerateBalls(2);
-            logicAPI.StartBallMovement();
-            Assert.IsTrue(logicAPI.GetIsRunning());
+            AbstractLogicAPI logicAPI = new LogicAPI(dataAPI);
+            logicAPI.StartSimulation(100, 100, 2);
             logicAPI.StopSimulation();
-            Assert.IsFalse(logicAPI.GetIsRunning());
+            Assert.AreEqual(logicAPI.GetBalls().Count, 0);
         }
 
         [TestMethod]
-        public void SetDimensionsTest()
+        public void StartStopSimulationTest()
         {
             var dataAPI = new FakeDataAPI();
-            AbstractLogicAPI logicAPI = new LogicAPI(100, 100, dataAPI);
-            logicAPI.SetHeight(200);
-            logicAPI.SetWidth(200);
-            Assert.AreEqual(logicAPI.GetHeight(), 200);
-            Assert.AreEqual(logicAPI.GetWidth(), 200);
+            AbstractLogicAPI logicAPI = new LogicAPI(dataAPI);
+            logicAPI.StartSimulation(100, 100, 2);
+            Assert.IsTrue(logicAPI.IsRunning);
+            logicAPI.StopSimulation();
+            Assert.IsFalse(logicAPI.IsRunning);
+        }
+
+        [TestMethod]
+        public void BoundaryCollisionTest()
+        {
+            Ball ball = new Ball(0, 50, 5, 5)
+            {
+                SpeedX = 1,
+                SpeedY = -1,
+            };
+
+
+            var dataAPI = new FakeDataAPI();
+            LogicAPI logicAPI = new LogicAPI(dataAPI);
+            ball.BallPositionChanged += (sender, args) => 
+            {
+                logicAPI.CheckBoundaryCollision((Ball)sender);
+            };
+
+            ball.Move();
+
+            Assert.AreEqual(ball.SpeedY, 1);
         }
     }
 }

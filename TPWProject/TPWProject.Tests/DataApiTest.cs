@@ -17,7 +17,7 @@ namespace TPWProject.Tests
             ballRepository.Add(testBall);
             ballRepository.Add(testBall2);
             Assert.AreEqual(ballRepository.Count(), 2);
-            List<IBall> balls = (List<IBall>)ballRepository.GetAll();
+            List<IBall> balls = ballRepository.GetAll();
             Assert.AreSame(balls[0], testBall);
             Assert.AreSame(balls[1], testBall2);
             ballRepository.Remove(testBall2);
@@ -31,15 +31,13 @@ namespace TPWProject.Tests
         [TestMethod]
         public void DataAPITest()
         {
-            DataAPI api = new DataAPI();           
-            IBall testball = api.GenerateBall(30, 10);
+            DataAPI api = new DataAPI();
+            api.CreateSimulation(200, 200, 2);
             Assert.IsNotNull(api);
-            Assert.IsNotNull(api.GenerateBall(10, 20));
-            List<IBall> balls = (List<IBall>)api.GetBalls();
-            Assert.AreSame(balls[0], testball);
+            List<IBall> balls = api.GetBalls();
+            Assert.AreEqual(balls.Count, 2);
             api.RemoveAllBalls();
-            List<IBall> balls2 = (List<IBall>)api.GetBalls();
-            Assert.IsFalse(balls2.Contains(testball));
+            Assert.AreEqual(balls.Count, 0);
         }
     }
 }

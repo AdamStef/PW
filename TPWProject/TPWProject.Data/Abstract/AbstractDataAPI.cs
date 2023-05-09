@@ -13,7 +13,6 @@ namespace TPWProject.Data.Abstract
         {
             return new DataAPI();
         }
-        //public abstract IBall GenerateBall(double height, double width);
         public abstract List<IBall> GetBalls();
         public abstract void RemoveAllBalls();
         public abstract void CreateSimulation(double height, double width, int ballCount);

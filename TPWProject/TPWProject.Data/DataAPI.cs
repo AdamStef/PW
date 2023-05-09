@@ -10,12 +10,6 @@ namespace TPWProject.Data
 {
     public class DataAPI : AbstractDataAPI
     {
-        //public IBallRepository BallRepository { get; set; }
-        //public Boundary Boundary { get; private set; }
-        public bool IsRunning { get; private set; }
-
-        private readonly object locked = new object();
-
         public DataAPI()
         {
             Boundary = new Boundary(0, 0);
@@ -35,7 +29,6 @@ namespace TPWProject.Data
         {
             Boundary = new Boundary(width, height);
             Boundary.GenerateBalls(ballCount);
-            //StartBallMovement();
         }
 
         public override Boundary GetBoundary()

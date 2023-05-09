@@ -11,47 +11,20 @@ namespace TPWProject.Tests.FakeDependencies
 {
     public class FakeLogicAPI : AbstractLogicAPI
     {
-        private List<IBall> balls;
-        private double height;
-        private double width;
-        private bool isRunning = false;
+        List<IBall> balls;
+        public double height;
+        public double width;
 
         public FakeLogicAPI()
         {
             balls = new List<IBall>();
-            this.height = 10;
-            this.width = 10;
+            height = 10;
+            width = 10;
         }
 
-        public override void ClearRepository()
-        {
-            balls.Clear();
-        }
-
-        public override void GenerateBalls(int ballsCount)
-        {
-            for (int i = 0; i < ballsCount; i++)
-                balls.Add(new Ball(10, 10, 10, 10));
-        }
-
-        public override IList<IBall> GetBalls()
+        public override List<IBall> GetBalls()
         {
             return balls;
-        }
-
-        public override double GetHeight()
-        {
-            return height;
-        }
-
-        public override bool GetIsRunning()
-        {
-            return isRunning;
-        }
-
-        public override double GetWidth()
-        {
-            return width;
         }
 
         public override void SetHeight(double height)
@@ -64,14 +37,17 @@ namespace TPWProject.Tests.FakeDependencies
             this.width = width;
         }
 
-        public override void StartBallMovement()
+        public override void StartSimulation(double height, double width, int ballCount)
         {
-            isRunning = true;
+            IsRunning = true;
+            for (int i = 0; i < ballCount; i++)
+                balls.Add(new Ball(0, 0, 0, 0));
         }
 
         public override void StopSimulation()
         {
-            isRunning = false;
+            IsRunning = false;
+            balls.Clear();
         }
     }
 }
