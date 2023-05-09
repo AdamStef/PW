@@ -35,7 +35,7 @@ namespace TPWProject.Data
         {
             Boundary = new Boundary(width, height);
             Boundary.GenerateBalls(ballCount);
-            StartBallMovement();
+            //StartBallMovement();
         }
 
         public override Boundary GetBoundary()
@@ -54,7 +54,7 @@ namespace TPWProject.Data
                     {
                         lock (locked)
                         {
-                            ball.Move(Boundary.Height, Boundary.Width);
+                            ball.Move();
                         }
                         Thread.Sleep(5);
                     }

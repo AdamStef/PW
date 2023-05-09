@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using TPWProject.Data;
 using TPWProject.Data.Abstract;
 using TPWProject.Logic.Abstract;
@@ -10,7 +11,10 @@ namespace TPWProject.Logic
     public class LogicAPI : AbstractLogicAPI
     {
         private readonly AbstractDataAPI dataAPI;
-        
+        public bool IsRunning { get; private set; }
+
+        private readonly object locked = new object();
+
 
         public LogicAPI(AbstractDataAPI dataAPI = null)
         {
@@ -27,11 +31,12 @@ namespace TPWProject.Logic
             {
                 ball.BallPositionChanged += OnBallPositionChanged;
             }
+            StartBallMovement();
         }
 
         public override void StopSimulation()
         {
-            dataAPI.StopMovement();
+            StopMovement();
             dataAPI.RemoveAllBalls();
         }
 
@@ -75,46 +80,78 @@ namespace TPWProject.Logic
             }
         }
 
-        private void CheckBallsCollision(Ball ball)
+        private void StartBallMovement()
         {
-            foreach (Ball b in dataAPI.GetBalls())
+            IsRunning = true;
+            foreach (Ball ball in dataAPI.GetBalls())
             {
-                if (b == ball)
+                Thread thread = new(() =>
                 {
-                    continue;
-                }
-                double xCenter = ball.Left + ball.Diameter / 2;
-                double yCenter = ball.Top + ball.Diameter / 2;
-
-                double distance = Math.Sqrt(Math.Pow(b.Left + (b.Diameter * 0.5) - xCenter, 2) + Math.Pow(b.Top + (b.Diameter * 0.5) - yCenter, 2));
-                if (distance <= 0.5 * (b.Diameter + ball.Diameter))
-                {
-                    Collision(ball, b);
-                }
+                    while (IsRunning)
+                    {
+                        lock (locked)
+                        {
+                            ball.Move();
+                            //HandleCollisions(ball);
+                            CheckBallsCollision(ball);
+                        }
+                    Thread.Sleep(5);
+                    }
+                });
+                thread.IsBackground = true;
+                thread.Start();
             }
         }
 
-
-        private void Collision(Ball b1, Ball b2)
+        public void StopMovement()
         {
-            double b1SpeedX = b1.SpeedX;
-            double b2SpeedX = b2.SpeedX;
+            IsRunning = false;
+        }
 
-            double b1SpeedY = b1.SpeedY;
-            double b2SpeedY = b2.SpeedY;
+        private void CheckBallsCollision(Ball ball)
+        {
+            foreach (Ball otherBall in dataAPI.GetBalls())
+            {
+                if (otherBall != ball) // Avoid self-collision
+                {
+                    double distance = Math.Sqrt(Math.Pow(otherBall.Top - ball.Top, 2) + Math.Pow(otherBall.Left - ball.Left, 2));
 
-            b1.SpeedX = (b1SpeedX * (b1.Mass - b2.Mass) + 2 * b2.Mass * b2SpeedX) / (b1.Mass + b2.Mass);
-            b2.SpeedX = (b2SpeedX * (b2.Mass - b1.Mass) + 2 * b1.Mass * b1SpeedX) / (b1.Mass + b2.Mass);
+                    if (distance <= ball.Diameter / 2 + otherBall.Diameter / 2)
+                    {
+                        // Calculate the collision angle
+                        double angle = Math.Atan2(otherBall.Top - ball.Top, otherBall.Left - ball.Left);
 
-            b1.SpeedY = (b1SpeedY * (b1.Mass - b2.Mass) + 2 * b2.Mass * b2SpeedY) / (b1.Mass + b2.Mass);
-            b2.SpeedY = (b2SpeedY * (b2.Mass - b1.Mass) + 2 * b1.Mass * b1SpeedY) / (b1.Mass + b2.Mass);
+                        // Calculate the new velocities after the collision
+                        double newSpeedX1 = ball.SpeedX * Math.Cos(angle) + ball.SpeedY * Math.Sin(angle);
+                        double newSpeedY1 = ball.SpeedY * Math.Cos(angle) - ball.SpeedX * Math.Sin(angle);
+                        double newSpeedX2 = otherBall.SpeedX * Math.Cos(angle) + otherBall.SpeedY * Math.Sin(angle);
+                        double newSpeedY2 = otherBall.SpeedY * Math.Cos(angle) - otherBall.SpeedX * Math.Sin(angle);
+
+                        // Update the ball velocities
+                        ball.SpeedX = newSpeedX2;
+                        ball.SpeedY = newSpeedY1;
+                        otherBall.SpeedX = newSpeedX1;
+                        otherBall.SpeedY = newSpeedY2;
+
+                        // Update the ball positions to avoid overlap
+                        double overlap = ball.Diameter / 2 + otherBall.Diameter / 2 - distance;
+                        ball.Top -= overlap / 2 * Math.Sin(angle);
+                        ball.Left -= overlap / 2 * Math.Cos(angle);
+                        otherBall.Top += overlap / 2 * Math.Sin(angle);
+                        otherBall.Left += overlap / 2 * Math.Cos(angle);
+
+                        // Invoke the BallPositionChanged event to notify subscribers of the new positions
+                        ball.Move();
+                        otherBall.Move();
+                    }
+                }
+            }
         }
 
         private void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
         {
             Ball ball = (Ball)sender;
             CheckBoundaryCollision(ball);
-            CheckBallsCollision(ball);
         }
     }
 }

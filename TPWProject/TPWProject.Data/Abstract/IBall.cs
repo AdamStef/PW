@@ -17,6 +17,6 @@ namespace TPWProject.Data.Abstract
         double SpeedX { get; }
         double SpeedY { get; }
 
-        void Move(double height, double width);
+        void Move();
     }
 }

@@ -27,15 +27,12 @@ namespace TPWProject.Data
             SpeedY = random.NextDouble() + 0.5;
         }
 
-        public void Move(double height, double width)
+        public void Move()
         {
-            double prevTop = Top;
-            double prevLeft = Left;
-
             Top += SpeedY;
             Left += SpeedX;
 
-            BallPositionChanged?.Invoke(this, new BallPositionChangedEventArgs(Top, Left, prevTop, prevLeft));
+            BallPositionChanged?.Invoke(this, new BallPositionChangedEventArgs(Top, Left));
         }
     }
 }

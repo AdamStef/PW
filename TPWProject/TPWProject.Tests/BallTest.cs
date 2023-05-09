@@ -33,7 +33,7 @@ namespace TPWProject.Tests
         public void MoveTest()
         {
             Ball testBall = new Ball(100, 100, 10, 10);
-            testBall.Move(250, 300);
+            testBall.Move();
             Assert.AreNotEqual(testBall.Left, 100);
             Assert.AreNotEqual(testBall.Top, 100);
         }
