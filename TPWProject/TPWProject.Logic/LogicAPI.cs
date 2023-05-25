@@ -12,8 +12,6 @@ namespace TPWProject.Logic
     {
         private readonly AbstractDataAPI dataAPI;
 
-        private readonly object locked = new();
-
         public LogicAPI(AbstractDataAPI dataAPI = null)
         {
             if (dataAPI != null)
@@ -88,10 +86,7 @@ namespace TPWProject.Logic
                 {
                     while (IsRunning)
                     {
-                        lock (locked)
-                        {
-                            ball.Move();
-                        }
+                        ball.Move();
                         Thread.Sleep(10);
                     }
                 })
@@ -144,11 +139,8 @@ namespace TPWProject.Logic
         private void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
         {
             Ball ball = (Ball)sender;
-            lock (locked)
-            {
-                CheckBoundaryCollision(ball);
-                CheckBallCollisions();
-            }
+            CheckBoundaryCollision(ball);
+            CheckBallCollisions();
         }
     }
 }

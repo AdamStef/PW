@@ -1,16 +1,87 @@
 ﻿using System;
+using System.Threading.Tasks;
 using TPWProject.Data.Abstract;
 
 namespace TPWProject.Data
 {
     public class Ball : IBall
     {
-        public double Top { get; set; }
-        public double Left { get; set; }
+        private readonly object positionLock = new();
+        private readonly object speedLock = new();
+        private double _top;
+        private double _left;
+        private double _speedX;
+        private double _speedY;
+        public double Top 
+        {
+            get
+            {
+                lock (positionLock)
+                {
+                    return _top;
+                }
+            }
+            set
+            {
+                lock (positionLock)
+                {
+                    _top = value;
+                }
+            }
+        }
+        public double Left
+        {
+            get
+            {
+                lock (positionLock)
+                {
+                    return _left;
+                }
+            }
+            set
+            {
+                lock (positionLock)
+                {
+                    _left = value;
+                }
+            }
+        }
         public double Diameter { get; }
         public double Mass { get; }
-        public double SpeedX { get; set; }
-        public double SpeedY { get; set; }
+        public double SpeedX
+        {
+            get
+            {
+                lock (speedLock)
+                {
+                    return _speedX;
+                }
+            }
+            set
+            {
+                lock (speedLock)
+                {
+                    _speedX = value;
+                }
+            }
+        }
+        public double SpeedY
+        {
+            get
+            {
+                lock (speedLock)
+                {
+                    return _speedY;
+                }
+            }
+            set
+            {
+                lock (speedLock)
+                {
+                    _speedY = value;
+                }
+            }
+        }
 
         public event BallPositionChangedEventHandler BallPositionChanged;
 
