@@ -36,7 +36,7 @@ namespace TPWProject.Data
                 diameter = random.Next(50, 70);
                 x = random.NextDouble() * (Width - diameter);
                 y = random.NextDouble() * (Height - diameter);
-                mass = diameter / 100;
+                mass = diameter / 50;
 
                 double xCenter = x + diameter / 2;
                 double yCenter = y + diameter / 2;

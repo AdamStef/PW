@@ -88,10 +88,7 @@ namespace TPWProject.Logic
                 {
                     while (IsRunning)
                     {
-                        lock (locked)
-                        {
-                            ball.Move();
-                        }
+                        ball.Move();
                         Thread.Sleep(10);
                     }
                 })
@@ -144,11 +141,8 @@ namespace TPWProject.Logic
         private void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)
         {
             Ball ball = (Ball)sender;
-            lock (locked)
-            {
-                CheckBoundaryCollision(ball);
-                CheckBallCollisions();
-            }
+            CheckBoundaryCollision(ball);
+            CheckBallCollisions();
         }
     }
 }
