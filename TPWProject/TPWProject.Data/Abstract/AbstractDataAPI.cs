@@ -11,11 +11,12 @@ namespace TPWProject.Data.Abstract
         public Boundary Boundary { get; set; }
         public static AbstractDataAPI CreateAPI()
         {
-            return new DataAPI();
+            return new DataAPI(/*new FileLogger()*/);
         }
         public abstract List<IBall> GetBalls();
         public abstract void RemoveAllBalls();
         public abstract void CreateSimulation(double height, double width, int ballCount);
         public abstract Boundary GetBoundary();
+        public abstract void EnableLogging(ILogger logger);
     }
 }

@@ -23,6 +23,7 @@ namespace TPWProject.Logic
         public override void StartSimulation(double height, double width, int ballCount)
         {
             dataAPI.CreateSimulation(height, width, ballCount);
+            dataAPI.EnableLogging(new FileLogger());
             foreach (Ball ball in dataAPI.GetBalls().Cast<Ball>())
             {
                 ball.BallPositionChanged += OnBallPositionChanged;

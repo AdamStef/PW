@@ -1,29 +1,37 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Timers;
 using TPWProject.Data.Abstract;
 
 namespace TPWProject.Data
 {
     public class Ball : IBall
     {
-        private readonly object positionLock = new();
-        private readonly object speedLock = new();
+        private readonly object _positionLock = new();
+        private readonly object _speedLock = new();
+
+        private Timer _timer;
+        public ILogger Logger { get; set; }
+
+        private readonly Guid _id = Guid.NewGuid();
+
+
         private double _top;
         private double _left;
         private double _speedX;
         private double _speedY;
-        public double Top 
+        public double Top
         {
             get
             {
-                lock (positionLock)
+                lock (_positionLock)
                 {
                     return _top;
                 }
             }
             set
             {
-                lock (positionLock)
+                lock (_positionLock)
                 {
                     _top = value;
                 }
@@ -33,14 +41,14 @@ namespace TPWProject.Data
         {
             get
             {
-                lock (positionLock)
+                lock (_positionLock)
                 {
                     return _left;
                 }
             }
             set
             {
-                lock (positionLock)
+                lock (_positionLock)
                 {
                     _left = value;
                 }
@@ -52,14 +60,14 @@ namespace TPWProject.Data
         {
             get
             {
-                lock (speedLock)
+                lock (_speedLock)
                 {
                     return _speedX;
                 }
             }
             set
             {
-                lock (speedLock)
+                lock (_speedLock)
                 {
                     _speedX = value;
                 }
@@ -69,14 +77,14 @@ namespace TPWProject.Data
         {
             get
             {
-                lock (speedLock)
+                lock (_speedLock)
                 {
                     return _speedY;
                 }
             }
             set
             {
-                lock (speedLock)
+                lock (_speedLock)
                 {
                     _speedY = value;
                 }
@@ -84,6 +92,7 @@ namespace TPWProject.Data
         }
 
         public event BallPositionChangedEventHandler BallPositionChanged;
+
 
 
         public Ball(double top, double left, double diameter, double mass)
@@ -95,6 +104,10 @@ namespace TPWProject.Data
             Mass = mass;
             SpeedX = random.NextDouble() + 0.5;
             SpeedY = random.NextDouble() + 0.5;
+
+            _timer = new Timer();
+            _timer.Interval = 1000;
+
         }
 
         public void Move()
@@ -104,5 +117,26 @@ namespace TPWProject.Data
 
             BallPositionChanged?.Invoke(this, new BallPositionChangedEventArgs(Top, Left));
         }
+
+        public void StartLogging()
+        {
+            if (Logger != null)
+            {
+                _timer.Elapsed += async (sender, e) =>
+                {
+                    await Logger.Log($"Ball {_id} - Left: {Left}, Top: {Top}");
+                };
+                _timer.Start();
+            }
+        }
+
+        public void StopLogging()
+        {
+            _timer?.Stop();
+            _timer.Dispose();
+        }
+
+
+        //TODO fix log doesn't stop
     }
 }

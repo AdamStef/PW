@@ -16,7 +16,10 @@ namespace TPWProject.Data.Abstract
         double Mass { get; }
         double SpeedX { get; set; }
         double SpeedY { get; set; }
+        ILogger Logger { get; set; }
 
         void Move();
+        void StartLogging();
+        void StopLogging();
     }
 }
