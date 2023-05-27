@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 using System.Timers;
 using TPWProject.Data.Abstract;
 
@@ -10,16 +11,18 @@ namespace TPWProject.Data
         private readonly object _positionLock = new();
         private readonly object _speedLock = new();
 
-        private Timer _timer;
+        private readonly Timer _timer;
+        [JsonIgnore]
         public ILogger Logger { get; set; }
 
-        private readonly Guid _id = Guid.NewGuid();
+        public int Id { get; set; }
 
 
         private double _top;
         private double _left;
         private double _speedX;
         private double _speedY;
+
         public double Top
         {
             get
@@ -54,8 +57,11 @@ namespace TPWProject.Data
                 }
             }
         }
+        [JsonIgnore]
         public double Diameter { get; }
+        [JsonIgnore]
         public double Mass { get; }
+        [JsonIgnore]
         public double SpeedX
         {
             get
@@ -73,6 +79,7 @@ namespace TPWProject.Data
                 }
             }
         }
+        [JsonIgnore]
         public double SpeedY
         {
             get
@@ -106,8 +113,7 @@ namespace TPWProject.Data
             SpeedY = random.NextDouble() + 0.5;
 
             _timer = new Timer();
-            _timer.Interval = 1000;
-
+            _timer.Interval = 5000;
         }
 
         public void Move()
@@ -124,7 +130,13 @@ namespace TPWProject.Data
             {
                 _timer.Elapsed += async (sender, e) =>
                 {
-                    await Logger.Log($"Ball {_id} - Left: {Left}, Top: {Top}");
+                    BallJsonModel ballToSave;
+                    lock (_positionLock)
+                    {
+                        Debug.WriteLine(DateTime.Now.Millisecond.ToString() + "   " + Top);
+                        ballToSave = new BallJsonModel(Id, Top, Left);
+                    }
+                    await Logger.Log(ballToSave);
                 };
                 _timer.Start();
             }
@@ -135,8 +147,5 @@ namespace TPWProject.Data
             _timer?.Stop();
             _timer.Dispose();
         }
-
-
-        //TODO fix log doesn't stop
     }
 }

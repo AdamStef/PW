@@ -10,13 +10,13 @@ namespace TPWProject.Data
 {
     public class DataAPI : AbstractDataAPI
     {
-        private ILogger _logger;
+        //private ILogger _logger;
         //private Timer _timer;
 
         public DataAPI(/*ILogger logger*/)
         {
             Boundary = new Boundary(0, 0);
-            _logger = new FileLogger();
+            //_logger = new FileLogger();
             //_logger = logger;
             //_timer = new Timer();
             //_timer.AutoReset = true;

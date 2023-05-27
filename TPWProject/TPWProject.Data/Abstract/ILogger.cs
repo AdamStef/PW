@@ -8,6 +8,6 @@ namespace TPWProject.Data.Abstract
 {
     public interface ILogger
     {
-        Task Log(string message); //TODO JSON
+        Task Log(BallJsonModel ball);
     }
 }

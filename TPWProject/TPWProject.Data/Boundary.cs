@@ -21,7 +21,7 @@ namespace TPWProject.Data
             ballRepository = new BallRepository();
         }
 
-        private Ball GenerateBall()
+        private Ball GenerateBall(int id)
         {
             Random random = new Random();
 
@@ -51,7 +51,7 @@ namespace TPWProject.Data
                 }
             } while (within);
 
-            Ball ball = new Ball(y, x, diameter, mass);
+            Ball ball = new Ball(y, x, diameter, mass) { Id = id };
             return ball;
         }
 
@@ -60,7 +60,7 @@ namespace TPWProject.Data
             ballRepository.Clear();
             for (int i = 0; i < count; i++)
             {
-                Ball ball = GenerateBall();
+                Ball ball = GenerateBall(i);
                 ballRepository.Add(ball);
             }
         }
