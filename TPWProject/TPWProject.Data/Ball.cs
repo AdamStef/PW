@@ -12,7 +12,6 @@ namespace TPWProject.Data
         private readonly object _speedLock = new();
 
         private readonly Timer _timer;
-        [JsonIgnore]
         public ILogger Logger { get; set; }
 
         public int Id { get; set; }
@@ -57,11 +56,8 @@ namespace TPWProject.Data
                 }
             }
         }
-        [JsonIgnore]
         public double Diameter { get; }
-        [JsonIgnore]
         public double Mass { get; }
-        [JsonIgnore]
         public double SpeedX
         {
             get
@@ -79,7 +75,6 @@ namespace TPWProject.Data
                 }
             }
         }
-        [JsonIgnore]
         public double SpeedY
         {
             get

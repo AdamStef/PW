@@ -31,13 +31,6 @@ namespace TPWProject.Logic
             StartBallMovement();
         }
 
-        public override void StopSimulation()
-        {
-            StopMovement();
-            dataAPI.RemoveAllBalls();
-        }
-
-
         public override List<IBall> GetBalls()
         {
             return dataAPI.GetBalls();
@@ -51,6 +44,37 @@ namespace TPWProject.Logic
         public override void SetWidth(double width)
         {
             dataAPI.GetBoundary().Width = width;
+        }
+
+        public override void StopSimulation()
+        {
+            StopMovement();
+            dataAPI.RemoveAllBalls();
+        }
+
+        private void StartBallMovement()
+        {
+            IsRunning = true;
+            foreach (Ball ball in dataAPI.GetBalls().Cast<Ball>())
+            {
+                Thread thread = new(() =>
+                {
+                    while (IsRunning)
+                    {
+                        ball.Move();
+                        Thread.Sleep(10);
+                    }
+                })
+                {
+                    IsBackground = true
+                };
+                thread.Start();
+            }
+        }
+
+        private void StopMovement()
+        {
+            IsRunning = false;
         }
 
         public void CheckBoundaryCollision(Ball ball)
@@ -76,31 +100,6 @@ namespace TPWProject.Logic
                 ball.SpeedX *= -1;
                 ball.Left = dataAPI.Boundary.Width - ball.Diameter;
             }
-        }
-
-        private void StartBallMovement()
-        {
-            IsRunning = true;
-            foreach (Ball ball in dataAPI.GetBalls().Cast<Ball>())
-            {
-                Thread thread = new(() =>
-                {
-                    while (IsRunning)
-                    {
-                        ball.Move();
-                        Thread.Sleep(10);
-                    }
-                })
-                {
-                    IsBackground = true
-                };
-                thread.Start();
-            }
-        }
-
-        public void StopMovement()
-        {
-            IsRunning = false;
         }
 
         private void CheckBallCollisions()

@@ -11,7 +11,7 @@ namespace TPWProject.Data.Abstract
         public Boundary Boundary { get; set; }
         public static AbstractDataAPI CreateAPI()
         {
-            return new DataAPI(/*new FileLogger()*/);
+            return new DataAPI();
         }
         public abstract List<IBall> GetBalls();
         public abstract void RemoveAllBalls();

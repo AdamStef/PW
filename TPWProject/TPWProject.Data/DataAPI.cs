@@ -10,18 +10,9 @@ namespace TPWProject.Data
 {
     public class DataAPI : AbstractDataAPI
     {
-        //private ILogger _logger;
-        //private Timer _timer;
-
-        public DataAPI(/*ILogger logger*/)
+        public DataAPI()
         {
             Boundary = new Boundary(0, 0);
-            //_logger = new FileLogger();
-            //_logger = logger;
-            //_timer = new Timer();
-            //_timer.AutoReset = true;
-            //_timer.Interval = 1000;
-            //_timer.Elapsed += ;
         }
 
         public override List<IBall> GetBalls()
