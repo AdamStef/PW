@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using TPWProject.Data;
 
 namespace TPWProject.Presentation.Model
@@ -41,6 +42,7 @@ namespace TPWProject.Presentation.Model
         {
             this.ball = ball;
             ball.BallPositionChanged += OnBallPositionChanged;
+            Random r = new Random();
         }
 
         public void OnBallPositionChanged(object sender, BallPositionChangedEventArgs args)

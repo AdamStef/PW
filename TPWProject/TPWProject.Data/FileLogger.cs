@@ -21,7 +21,7 @@ namespace TPWProject.Data
             {
                 await using (StreamWriter sw = File.AppendText(Directory.GetCurrentDirectory() + $"\\log.json"))
                 {
-                    Debug.WriteLine(DateTime.Now.Millisecond.ToString() + "   " + ball.Top);
+                    //Debug.WriteLine(DateTime.Now.Millisecond.ToString() + "   " + ball.Top);
                     await sw.WriteLineAsync(JsonSerializer.Serialize(ball));
                 }
             }

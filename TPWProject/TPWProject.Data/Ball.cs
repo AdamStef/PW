@@ -8,11 +8,8 @@ namespace TPWProject.Data
 {
     public class Ball : IBall
     {
-        private readonly object _positionLock = new();
-        private readonly object _speedLock = new();
-
-        private readonly Timer _timer;
-        public ILogger Logger { get; set; }
+        public object _positionLock { get; } = new();
+        public object _speedLock { get; } = new();
 
         public int Id { get; set; }
 
@@ -106,9 +103,6 @@ namespace TPWProject.Data
             Mass = mass;
             SpeedX = random.NextDouble() + 0.5;
             SpeedY = random.NextDouble() + 0.5;
-
-            _timer = new Timer();
-            _timer.Interval = 5000;
         }
 
         public void Move()
@@ -117,30 +111,6 @@ namespace TPWProject.Data
             Left += SpeedX;
 
             BallPositionChanged?.Invoke(this, new BallPositionChangedEventArgs(Top, Left));
-        }
-
-        public void StartLogging()
-        {
-            if (Logger != null)
-            {
-                _timer.Elapsed += async (sender, e) =>
-                {
-                    BallJsonModel ballToSave;
-                    lock (_positionLock)
-                    {
-                        Debug.WriteLine(DateTime.Now.Millisecond.ToString() + "   " + Top);
-                        ballToSave = new BallJsonModel(Id, Top, Left);
-                    }
-                    await Logger.Log(ballToSave);
-                };
-                _timer.Start();
-            }
-        }
-
-        public void StopLogging()
-        {
-            _timer?.Stop();
-            _timer.Dispose();
         }
     }
 }

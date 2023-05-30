@@ -10,6 +10,7 @@ namespace TPWProject.Data
 {
     public class DataAPI : AbstractDataAPI
     {
+        private List<BallLogger> _loggers = new List<BallLogger>();
         public DataAPI()
         {
             Boundary = new Boundary(0, 0);
@@ -22,7 +23,8 @@ namespace TPWProject.Data
 
         public override void RemoveAllBalls()
         {
-            Boundary.GetAll().ForEach(b => { b.StopLogging(); });
+            _loggers.ForEach(b => b.Dispose());
+            _loggers.Clear();
             Boundary.RemoveAll();
         }
 
@@ -39,7 +41,10 @@ namespace TPWProject.Data
 
         public override void EnableLogging(ILogger logger)
         {
-            Boundary.GetAll().ForEach(b => { b.Logger = logger; b.StartLogging(); });
+            foreach (Ball b in Boundary.GetAll())
+            {
+                _loggers.Append(new BallLogger(logger, b));
+            }
         }
     }
 }

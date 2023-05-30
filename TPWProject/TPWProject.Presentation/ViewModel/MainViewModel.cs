@@ -74,33 +74,25 @@ namespace TPWProject.Presentation.ViewModel
 
         private void StartButton(object obj)
         {
-            Task.Run(() =>
+            if (BallsCount > 30)
             {
-                if (BallsCount > 30)
-                {
-                    MessageBox.Show("Max number of balls is 30", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                model.Stop();
-                model.Start(Height, Width, BallsCount);
-                Balls = model.GetBalls();
-            });
+                MessageBox.Show("Max number of balls is 30", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            model.Stop();
+            model.Start(Height, Width, BallsCount);
+            Balls = model.GetBalls();
         }
 
         private void StopButton(object obj)
         {
-            Task.Run(() =>
-            {
-                model.Stop();
-            });
+            model.Stop();
         }
         private void ClearButton(object obj)
         {
-            Task.Run(() =>
-            {
-                model.Stop();
-                Balls = model.GetBalls();
-            });
+            model.Stop();
+            Balls.Clear();
+            Balls = model.GetBalls();
         }
 
         public void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
