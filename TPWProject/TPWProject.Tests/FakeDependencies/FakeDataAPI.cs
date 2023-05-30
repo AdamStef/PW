@@ -23,6 +23,11 @@ namespace TPWProject.Tests.FakeDependencies
                 balls.Add(new Ball(0, 0, 0, 0));
         }
 
+        public override void EnableLogging(ILogger logger)
+        {
+            return;
+        }
+
         public override List<IBall> GetBalls()
         {
             return Boundary.GetAll();
